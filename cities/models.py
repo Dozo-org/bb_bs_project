@@ -17,14 +17,8 @@ class City(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='profile')
-    city = models.ManyToManyField(City, verbose_name='город', related_name='profile')
+    city = models.ManyToManyField(City)
 
     def __str__(self):
         return self.user.username
 
-    class Meta:
-        verbose_name_plural = 'profiles'
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'city'],
-                                    name='unique profile')
-        ]
