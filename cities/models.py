@@ -17,7 +17,7 @@ class City(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='profile')
-    city = models.ForeignKey(City, on_delete=models.PROTECT, verbose_name='город', related_name='profile')
+    city = models.ManyToManyField(City, verbose_name='город', related_name='profile')
 
     def __str__(self):
         return self.user.username
