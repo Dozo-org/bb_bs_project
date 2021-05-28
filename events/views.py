@@ -1,9 +1,9 @@
-from rest_framework import status
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
+
 from .models import Event, EventParticipant
-from .serializers import EventSerializer, EventParticipantSerializer
-from rest_framework.decorators import permission_classes, action
-from rest_framework import permissions, viewsets
+from .serializers import EventParticipantSerializer, EventSerializer
 
 
 @action(detail=True, methods=['get'])

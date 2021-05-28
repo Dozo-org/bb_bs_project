@@ -3,7 +3,6 @@ from django.db import models
 
 from cities.models import City
 
-
 User = get_user_model()
 
 
