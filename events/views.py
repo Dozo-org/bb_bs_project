@@ -23,13 +23,13 @@ class EventParticipantList(viewsets.ModelViewSet):
     serializer_class = EventParticipantSerializer
 
     def perform_create(self, serializer):
-        event = Event.object.get(id=self.kwargs['event'])
+        event = Event.objects.get(id=self.kwargs['event'])
         event.taken_seats += 1
         event.save()
         return serializer.save()
 
     def destroy(self, request, *args, **kwargs):
-        event = Event.object.get(id=self.kwargs['event'])
+        event = Event.objects.get(id=self.kwargs['event'])
         event.taken_seats -= 1
         event.save()
         participate = EventParticipant(user=self.request.user, event=event)
