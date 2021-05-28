@@ -1,15 +1,15 @@
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import action, permission_classes
+from rest_framework import status
 from rest_framework.response import Response
-
 from .models import Event, EventParticipant
-from .serializers import EventParticipantSerializer, EventSerializer
+from .serializers import EventSerializer, EventParticipantSerializer
+from rest_framework.decorators import permission_classes, action
+from rest_framework import permissions, viewsets
 
 
 @action(detail=True, methods=['get'])
 class EventList(viewsets.ModelViewSet):
     def get_queryset(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return Event.objects.filter(city=self.request.user.city).order_by('start_at')
         return Event.objects.filter(city__id=self.kwagrs['event']).order_by('start_at')
 

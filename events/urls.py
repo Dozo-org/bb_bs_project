@@ -9,5 +9,5 @@ router.register(r'event-participants', EventParticipantList, 'current_city')
 
 
 urlpatterns = [
-    path('v1/', include(router.urls)),
+    path('', include(router.urls)),
 ]

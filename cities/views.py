@@ -1,9 +1,10 @@
-from rest_framework import permissions, viewsets
-from rest_framework.decorators import action, permission_classes
+from rest_framework import generics
 
 from .models import City, Profile
-from .permissions import IsUserOrReadOnly
 from .serializers import CitySerializer, ProfileSerializer
+from .permissions import IsUserOrReadOnly
+from rest_framework import permissions, viewsets
+from rest_framework.decorators import permission_classes, action
 
 
 @action(detail=True, methods=['get'])
