@@ -17,12 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 
+from events.routers import CustomRouter
+from events.urls import router as event_router
+from cities.urls import router as cities_router
+
+v1_router = CustomRouter()
+v1_router.registry.extend(event_router.registry)
+v1_router.registry.extend(cities_router.registry)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/v1/profile/', include('user.urls')),
-    path('api/v1/cities/', include('cities.urls')),
-    path('api/v1/', include('events.urls')),
+    path('api/v1/', include(v1_router.urls)) # TODO: remove version
 ]
