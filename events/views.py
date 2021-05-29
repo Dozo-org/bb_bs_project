@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    allowed_methods = ['get', ]
+    http_method_names = ['get']
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -22,6 +22,7 @@ class EventViewSet(viewsets.ModelViewSet):
 class EventParticipantViewSet(viewsets.ModelViewSet):
     queryset = EventParticipant.objects.all()
     serializer_class = EventParticipantSerializer
+    http_method_names = ['get', 'post', 'delete']
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -34,10 +35,15 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
         else:
             raise serializers.ValidationError({'seats': 'Нет доступных мест для регистрации'})
 
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.request.data.get('event'))
+        self.check_object_permissions(self.request, obj)
+        return obj
+
     def destroy(self, request, *args, **kwargs):
-        event = Event.objects.get(id=self.kwargs['event'])
+        instance = self.get_object()
+        event = Event.objects.get(pk=instance.event.id)
         event.taken_seats -= 1
         event.save()
-        participate = EventParticipant(user=self.request.user, event=event)
-        participate.delete()
+        self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
