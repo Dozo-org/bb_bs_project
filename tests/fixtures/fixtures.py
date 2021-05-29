@@ -15,10 +15,24 @@ def another_city():
 
 
 @pytest.fixture
-def event():
-    return baker.make_recipe('tests.fixtures.event')
+def event(city):
+    return baker.make_recipe('tests.fixtures.event',city=city)
+
+@pytest.fixture
+def event_another(city):
+    return baker.make_recipe('tests.fixtures.event',city=city)
+
 
 
 @pytest.fixture
 def events():
     return baker.make_recipe('tests.fixtures.event', _quantity=5)
+
+@pytest.fixture
+def event_participant(admin,event):
+    return baker.make_recipe('tests.fixtures.event_participant',user=admin,event=event)
+
+@pytest.fixture
+def event_participant_another(admin,event_another):
+    return baker.make_recipe('tests.fixtures.event_participant',user=admin,event=event_another)
+

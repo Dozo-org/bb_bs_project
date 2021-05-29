@@ -3,8 +3,10 @@ import pytest
 
 
 @pytest.fixture
-def admin():
-    return baker.make_recipe('tests.fixtures.admin')
+def admin(city):
+    admin = baker.make_recipe('tests.fixtures.admin')
+    admin.city.set([city])
+    return admin
 
 
 @pytest.fixture

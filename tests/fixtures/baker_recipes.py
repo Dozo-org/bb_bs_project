@@ -1,5 +1,5 @@
 from model_bakery.recipe import Recipe, seq, foreign_key, related
-from events.models import Event
+from events.models import Event, EventParticipant
 from user.models import City, User
 
 city = Recipe(
@@ -9,10 +9,11 @@ city = Recipe(
 
 admin = Recipe(
     User,
+    username=seq('user'),
     password=seq('PassWord'),
     email=seq('admin', suffix='@gmail.com'),
     role='admin',
-    city=related('city')
+    #city=related('city')
 )
 
 #admin_with_city = admin.extend(city=related(city,))
@@ -28,5 +29,11 @@ moderator = Recipe(
 
 event = Recipe(
     Event,
-    address = 'Москва ул Тест'
+    title = seq('ул Тест')
+)
+
+event_participant = Recipe(
+   EventParticipant,
+    user=foreign_key(admin),
+    event=foreign_key(event)
 )
