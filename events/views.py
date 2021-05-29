@@ -25,6 +25,11 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'delete']
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        queryset = EventParticipant.objects.filter(user=user)
+        return queryset
+
     def perform_create(self, serializer):
         event_id = self.request.data.get('event')
         event = get_object_or_404(Event, id=event_id)
