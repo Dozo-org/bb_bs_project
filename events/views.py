@@ -41,7 +41,7 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
             raise serializers.ValidationError({'seats': 'Нет доступных мест для регистрации'})
 
     def get_object(self):
-        obj = get_object_or_404(self.get_queryset(), pk=self.request.data.get('event'))
+        obj = get_object_or_404(self.get_queryset(), event=self.request.data.get('event'))
         self.check_object_permissions(self.request, obj)
         return obj
 
