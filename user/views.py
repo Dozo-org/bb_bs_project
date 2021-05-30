@@ -61,8 +61,8 @@ class UsersViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
-class CityViewSet(ModelViewSet):
+'''class CityViewSet(ModelViewSet):
     serializer_class = CitySerializer
     queryset = City.objects.all()
     permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
-    lookup_field = 'name'
+    lookup_field = 'name'''
