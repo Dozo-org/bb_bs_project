@@ -29,7 +29,9 @@ moderator = Recipe(
 
 event = Recipe(
     Event,
-    title = seq('ул Тест')
+    title = seq('ул Тест'),
+    city=foreign_key(city),
+    seats=2,
 )
 
 event_participant = Recipe(
