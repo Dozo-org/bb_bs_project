@@ -50,7 +50,7 @@ class TestEventParticipants:
     @pytest.mark.django_db
     def test_create_unauthorized(self, client):
         data = {}
-        response = client.post(self.endpoint, data=data)
+        response = client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 401, (
             f'POST запрос к {self.endpoint} без токена должен вернуть 401'
         )
@@ -62,15 +62,12 @@ class TestEventParticipants:
     ):
         participants_count = EventParticipant.objects.count()
         data = {}
-        response = admin_client.post(self.endpoint, data=data)
+        response = admin_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400, (
             f'POST запрос к {self.endpoint} с неправильными данными должен вернуть 400'
         )
-        expected_json = {
-            'user': admin,
-            'event': event.id
-        }
-        response = admin_client.post(self.endpoint, data=expected_json)
+        expected_json = {'event': event.id}
+        response = admin_client.post(self.endpoint, data=expected_json, format='json')
         test_data = response.json()
         assert participants_count + 1 == EventParticipant.objects.count()
         assert response.status_code == 201, (
@@ -94,11 +91,8 @@ class TestEventParticipants:
         )
         participants_count = EventParticipant.objects.count()
         event_in_another_city = events[0]
-        expected_json = {
-            'user': admin,
-            'event': event_in_another_city.id
-        }
-        response = admin_client.post(self.endpoint, data=expected_json)
+        expected_json = {'event': event_in_another_city.id}
+        response = admin_client.post(self.endpoint, data=expected_json, format='json')
         assert event.city != event_in_another_city.city, (
             'Ошибка теста: события должны быть в разных городах'
         )
@@ -118,11 +112,8 @@ class TestEventParticipants:
         assert event_not_booked.get('booked') == False, (
             'Поле booked должно быть False если пользователь  не зарегестрирован'
         )
-        expected_json = {
-            'user': moderator,
-            'event': event.id
-        }
-        response = moderator_client.post(self.endpoint, data=expected_json)
+        expected_json = {'event': event.id}
+        response = moderator_client.post(self.endpoint, data=expected_json, format='json')
         assert response.status_code == 400, (
             'При регистрации на событие без доступных мест ответ должен быть 400'
         )
@@ -130,3 +121,22 @@ class TestEventParticipants:
             'Поле seats должно содержать сообщение об ошибке'
         )
 
+    @pytest.mark.django_db(transaction=True)
+    def test_destroy(self, admin, admin_client, event, admin_participant_another):
+        data = {'event': event.id}
+        admin_client.post(self.endpoint, data=data, format='json')
+        event.refresh_from_db()
+        taken_seats_counter = event.taken_seats
+        participants_count = EventParticipant.objects.filter(user=admin).count()
+        data = {'event': event.id}
+        response = admin_client.delete(self.endpoint,data=data, format='json')
+        event.refresh_from_db()
+        assert response.status_code == 204, (
+            f'DELETE запрос {self.endpoint} должен вернуть 204'
+        )
+        assert EventParticipant.objects.count() == participants_count - 1, (
+            f'DELETE запрос {self.endpoint} должен удалить объект'
+        )
+        assert event.taken_seats == taken_seats_counter - 1, (
+            f'DELETE запрос {self.endpoint} должен изменить значение поля taken_seats у объекта Event'
+        )
