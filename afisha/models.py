@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from cities.models import City
+from common.models import City
 
 
 User = get_user_model()
