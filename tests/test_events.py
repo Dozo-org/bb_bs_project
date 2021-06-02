@@ -1,7 +1,7 @@
 import pytest
 from model_bakery import baker
 
-from events.models import Event
+from afisha.models import Event
 
 
 class TestEventsList:

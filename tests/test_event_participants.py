@@ -1,8 +1,8 @@
 import pytest
 from model_bakery import baker
 
-from events.models import Event, EventParticipant
-from user.models import User, City
+from afisha.models import Event, EventParticipant
+from common.models import User, City
 
 
 class TestEventParticipants:

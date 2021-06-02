@@ -1,6 +1,6 @@
 from model_bakery.recipe import Recipe
 from model_bakery import baker
-from events.models import Event
+from afisha.models import Event
 import pytest
 
 

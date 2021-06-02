@@ -1,6 +1,6 @@
 from model_bakery.recipe import Recipe, seq, foreign_key, related
-from events.models import Event, EventParticipant
-from user.models import City, User
+from afisha.models import Event, EventParticipant
+from common.models import City, User
 
 city = Recipe(
     City,
