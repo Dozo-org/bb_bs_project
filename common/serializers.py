@@ -1,6 +1,21 @@
 from rest_framework import serializers
 
-from cities.models import City, Profile
+from .models import User, City, Profile
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """User serialiser."""
+
+    class Meta:
+        fields = (
+            'id',
+            'username',
+            'city'
+        )
+        model = User
+        extra_kwargs = {
+            'username': {'required': True},
+        }
 
 
 class CitySerializer(serializers.ModelSerializer):

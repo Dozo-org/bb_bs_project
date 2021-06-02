@@ -1,12 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.db.models import (Model, CharField, EmailField,
-                              TextChoices, BooleanField, ManyToManyField)
-#from cities.models import City
+from django.db import models
+
+#User = get_user_model()
 
 
-class City(Model):
-    name = CharField(max_length=30)
-    is_primary = BooleanField(default=False)
+# from cities.models import City
+
+
+class City(models.Model):
+    name = models.CharField(max_length=30)
+    is_primary = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Cities"
@@ -18,26 +22,26 @@ class City(Model):
 class User(AbstractUser):
     """User augmented fields."""
 
-    class RoleUser(TextChoices):
+    class RoleUser(models.TextChoices):
         USER = 'user', 'Пользователь'
         MENTOR = 'mentor', 'Наставник'
         MODERATOR = 'moderator', 'Модератор'
         MODERATOR_REG = 'moderator_reg', 'Модератор региональный'
         ADMIN = 'admin', 'Администратор'
 
-    role = CharField(
+    role = models.CharField(
         verbose_name='role',
         max_length=50,
         blank=True,
         choices=RoleUser.choices,
         default=RoleUser.USER
     )
-    email = EmailField(
+    email = models.EmailField(
         verbose_name='email',
         max_length=255,
         unique=True
     )
-    city = ManyToManyField(
+    city = models.ManyToManyField(
         City,
         related_name='users',
         blank=True,
@@ -46,7 +50,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
-    
+
     def __str__(self):
         return self.username
 
@@ -65,3 +69,19 @@ class User(AbstractUser):
     @property
     def is_mentor(self):
         return self.role == 'mentor'
+
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='profile')
+    city = models.ForeignKey(City, on_delete=models.PROTECT, verbose_name='город', related_name='profile')
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural = 'profiles'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'city'],
+                                    name='unique profile')
+            ]

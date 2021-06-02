@@ -1,14 +1,29 @@
 from rest_framework.decorators import action
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (IsAuthenticated)
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .models import City, User
-from .permissions import (IsAdmin, IsAdminOrReadOnly, IsMentor, IsModerator,
-                          IsSuperuser, IsModeratorReg)
+from .permissions import (IsAdmin, IsSuperuser)
 from .serializers import CitySerializer, UserSerializer
+
+
+class CityListViewSet(ReadOnlyModelViewSet):
+    queryset = City.objects.all().order_by('-is_primary')
+    serializer_class = CitySerializer
+    permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
+    lookup_field = 'name'
+
+
+'''@action(detail=True, methods=['get', 'put', 'patch'])
+@permission_classes([permissions.IsAuthenticated, IsUserOrReadOnly])
+class ProfileView(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)'''
 
 
 class UsersViewSet(ModelViewSet):

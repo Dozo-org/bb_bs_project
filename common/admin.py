@@ -1,6 +1,6 @@
 from django.contrib.admin import ModelAdmin, register
 
-from .models import User, City
+from .models import User, City, Profile
 
 
 @register(User)
@@ -17,3 +17,6 @@ class CityAdmin(ModelAdmin):
 
     list_display = ('name', 'is_primary')
     empty_value_display = '-пусто-'
+
+
+register(Profile)
