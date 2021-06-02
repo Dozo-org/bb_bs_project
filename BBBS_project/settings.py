@@ -40,9 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'events',
-    'cities',
-    'user',
+    'common',
+    'afisha',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +130,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'user.USER'
+AUTH_USER_MODEL = 'common.USER'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
