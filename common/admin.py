@@ -15,7 +15,7 @@ class UserAdmin(ModelAdmin):
 class CityAdmin(ModelAdmin):
     """City administration."""
 
-    list_display = ('name', 'is_primary')
+    list_display = ('name', 'isPrimary')
     empty_value_display = '-пусто-'
 
 

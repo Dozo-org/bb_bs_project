@@ -9,7 +9,7 @@ class City(models.Model):
         max_length=30,
         verbose_name='city'
     )
-    is_primary = models.BooleanField(
+    isPrimary = models.BooleanField(
         verbose_name='Primary City',
         default=False
     )
