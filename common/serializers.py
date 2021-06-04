@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from .models import User, City, Profile
+from .models import User, City
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """User serialiser."""
+    """User serializer."""
 
     class Meta:
         fields = (
@@ -19,15 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
+    """City serializer."""
+
     class Meta:
         fields = '__all__'
         model = City
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='username',
-                                        read_only=True)
-
-    class Meta:
-        fields = '__all__'
-        model = Profile

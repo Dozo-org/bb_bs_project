@@ -8,7 +8,7 @@ router.register(r'cities', CityListViewSet, 'city_list')
 
 urlpatterns = [
     #path(r'v1/cites/', CityViewSet.as_view({'get': 'list'})),
-    path(r'', UsersViewSet.as_view({'get': 'list',
-                                               'patch': 'partial_update',
-                                               'put': 'update'})),
+    # path(r'', UsersViewSet.as_view({'get': 'list',
+    #                                            'patch': 'partial_update',
+    #                                            'put': 'update'})),
 ]

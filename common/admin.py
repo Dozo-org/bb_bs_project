@@ -1,13 +1,13 @@
 from django.contrib.admin import ModelAdmin, register
 
-from .models import User, City, Profile
+from .models import User, City
 
 
 @register(User)
 class UserAdmin(ModelAdmin):
     """User administration."""
 
-    list_display = ('username', 'role', 'email')
+    list_display = ('username', 'role', 'email', 'city')
     empty_value_display = '-пусто-'
 
 
@@ -19,4 +19,3 @@ class CityAdmin(ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-register(Profile)
