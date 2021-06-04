@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 class City(models.Model):
     """City models"""
 
@@ -71,4 +70,6 @@ class User(AbstractUser):
 
     @property
     def is_mentor(self):
-        return self.role == self.RoleUser.MENTOR
+        return self.role == 'mentor'
+
+
