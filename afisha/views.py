@@ -67,7 +67,6 @@ class MainViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
-
         response_data = {
             'event': serializer.data[0],
         }

@@ -11,9 +11,7 @@ class EventSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if user.is_anonymous:
             return False
-        if EventParticipant.objects.filter(user=user, event=obj).exists():
-            return True
-        return False
+        return EventParticipant.objects.filter(user=user, event=obj).exists()
 
     class Meta:
         fields = '__all__'
