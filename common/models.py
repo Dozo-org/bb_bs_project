@@ -2,7 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-#User = get_user_model()
+
+# User = get_user_model()
 
 
 # from cities.models import City
@@ -71,10 +72,12 @@ class User(AbstractUser):
         return self.role == 'mentor'
 
 
-
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='profile')
-    city = models.ForeignKey(City, on_delete=models.PROTECT, verbose_name='город', related_name='profile')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             verbose_name='пользователь',
+                             related_name='profile')
+    city = models.ForeignKey(City, on_delete=models.PROTECT,
+                             verbose_name='город', related_name='profile')
 
     def __str__(self):
         return self.user.username
@@ -84,4 +87,4 @@ class Profile(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'city'],
                                     name='unique profile')
-            ]
+        ]
