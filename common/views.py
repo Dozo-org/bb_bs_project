@@ -16,7 +16,6 @@ class CityViewSet(ModelViewSet):
     lookup_field = 'name'
 
 
-
 class UsersViewSet(ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
@@ -65,4 +64,3 @@ class UsersViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-

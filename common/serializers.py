@@ -4,7 +4,6 @@ from .models import User, City
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """User serializer."""
 
     class Meta:
         fields = (
@@ -19,7 +18,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
-    """City serializer."""
 
     class Meta:
         fields = '__all__'

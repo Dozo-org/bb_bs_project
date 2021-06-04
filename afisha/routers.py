@@ -2,9 +2,6 @@ from rest_framework.routers import Route, DefaultRouter
 
 
 class CustomRouter(DefaultRouter):
-    """
-    A router to allow delete object without lookup.
-    """
     routes = [
         Route(
             url=r'^{prefix}{trailing_slash}$',

@@ -4,7 +4,8 @@ from .models import Event
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('city', 'title', 'start_at', 'end_at', 'seats', 'taken_seats')
+    list_display = ('city', 'title', 'start_at', 'end_at', 'seats',
+                    'taken_seats')
     search_fields = ('title', 'city', 'start_at', 'end_at')
     list_filter = ('title', 'city', 'start_at', 'end_at')
     ordering = ('city',)

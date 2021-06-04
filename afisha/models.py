@@ -15,16 +15,22 @@ class Event(models.Model):
     start_at = models.DateTimeField(verbose_name='начало')
     end_at = models.DateTimeField(verbose_name='окончание')
     seats = models.IntegerField(verbose_name='количество мест')
-    taken_seats = models.IntegerField(default=0, verbose_name='количество занятых мест')
-    city = models.ForeignKey(City, on_delete=models.PROTECT, null=True, verbose_name='город', related_name='events')
+    taken_seats = models.IntegerField(default=0,
+                                      verbose_name='количество занятых мест')
+    city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
+                             verbose_name='город', related_name='events')
 
     def __str__(self):
         return self.title
 
 
 class EventParticipant(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='participates')
-    event = models.ForeignKey(Event, on_delete=models.PROTECT, verbose_name='мероприятие', related_name='participants')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             verbose_name='пользователь',
+                             related_name='participates')
+    event = models.ForeignKey(Event, on_delete=models.PROTECT,
+                              verbose_name='мероприятие',
+                              related_name='participants')
 
     class Meta:
         verbose_name_plural = 'participate'

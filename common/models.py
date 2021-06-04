@@ -1,9 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-class City(models.Model):
-    """City models"""
 
+class City(models.Model):
     name = models.CharField(
         max_length=30,
         verbose_name='city'
@@ -21,8 +20,6 @@ class City(models.Model):
 
 
 class User(AbstractUser):
-    """User augmented fields."""
-
     class RoleUser(models.TextChoices):
         USER = 'user', 'Пользователь'
         MENTOR = 'mentor', 'Наставник'
@@ -71,5 +68,3 @@ class User(AbstractUser):
     @property
     def is_mentor(self):
         return self.role == 'mentor'
-
-
