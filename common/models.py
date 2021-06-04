@@ -1,17 +1,16 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-# User = get_user_model()
-
-
-# from cities.models import City
-
-
 class City(models.Model):
-    name = models.CharField(max_length=30)
-    is_primary = models.BooleanField(default=False)
+    name = models.CharField(
+        max_length=30,
+        verbose_name='city'
+    )
+    isPrimary = models.BooleanField(
+        verbose_name='Primary City',
+        default=False
+    )
 
     class Meta:
         verbose_name_plural = "Cities"
@@ -21,8 +20,6 @@ class City(models.Model):
 
 
 class User(AbstractUser):
-    """User augmented fields."""
-
     class RoleUser(models.TextChoices):
         USER = 'user', 'Пользователь'
         MENTOR = 'mentor', 'Наставник'
@@ -42,9 +39,10 @@ class User(AbstractUser):
         max_length=255,
         unique=True
     )
-    city = models.ManyToManyField(
+    city = models.ForeignKey(
         City,
         related_name='users',
+        on_delete=models.DO_NOTHING,
         blank=True,
         null=True)
 
@@ -57,34 +55,16 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.is_staff or self.role == 'admin'
+        return self.is_staff or self.role == self.RoleUser.ADMIN
 
     @property
     def is_moderator(self):
-        return self.role == 'moderator'
+        return self.role == self.RoleUser.MODERATOR
 
     @property
     def is_moderator_reg(self):
-        return self.role == 'moderator_reg'
+        return self.role == self.RoleUser.MODERATOR_REG
 
     @property
     def is_mentor(self):
         return self.role == 'mentor'
-
-
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             verbose_name='пользователь',
-                             related_name='profiles')
-    city = models.ForeignKey(City, on_delete=models.PROTECT,
-                             verbose_name='город', related_name='profiles')
-
-    def __str__(self):
-        return self.user.username
-
-    class Meta:
-        verbose_name_plural = 'profiles'
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'city'],
-                                    name='unique profile')
-        ]

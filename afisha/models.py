@@ -3,20 +3,20 @@ from django.db import models
 
 from common.models import City
 
+
 User = get_user_model()
 
 
 class Event(models.Model):
     address = models.CharField(max_length=200, verbose_name='адрес')
     contact = models.CharField(max_length=200, verbose_name='контакт')
-    title = models.CharField(max_length=200, unique=Trur,
-                             verbose_name='название')
+    title = models.CharField(max_length=200, verbose_name='название')
     description = models.TextField(verbose_name='описание')
     start_at = models.DateTimeField(verbose_name='начало')
     end_at = models.DateTimeField(verbose_name='окончание')
     seats = models.IntegerField(verbose_name='количество мест')
-    taken_seats = models.IntegerField(default=0, verbose_name='количество '
-                                                              'занятых мест')
+    taken_seats = models.IntegerField(default=0,
+                                      verbose_name='количество занятых мест')
     city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
                              verbose_name='город', related_name='events')
 
