@@ -5,7 +5,6 @@ from .models import User, City
 
 @register(User)
 class UserAdmin(ModelAdmin):
-    """User administration."""
 
     list_display = ('username', 'role', 'email', 'city')
     empty_value_display = '-пусто-'
@@ -13,7 +12,6 @@ class UserAdmin(ModelAdmin):
 
 @register(City)
 class CityAdmin(ModelAdmin):
-    """City administration."""
 
     list_display = ('name', 'isPrimary')
     empty_value_display = '-пусто-'

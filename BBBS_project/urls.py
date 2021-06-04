@@ -13,8 +13,10 @@ v1_router.registry.extend(common_router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/', jwt_views.TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
+         name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/', include(v1_router.urls)), # TODO: remove version
     path('api/v1/profile/', UsersViewSet.as_view({'get': 'list',
