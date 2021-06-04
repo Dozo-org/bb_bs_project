@@ -1,19 +1,6 @@
 from django.contrib import admin
-from django.contrib.admin.views.main import ChangeList
-from django.contrib.auth import get_user_model
 
 from .models import Event
-
-User = get_user_model()
-
-
-class EventChangeList(ChangeList):
-    def get_queryset(self, request):
-        queryset = super(EventChangeList, self).get_queryset(request)
-        user = request.user
-        if user.role == 'moderator_reg':
-            return queryset.filter(city__in=user.city.all())
-        return queryset
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -24,8 +11,26 @@ class EventAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
     readonly_fields = ('taken_seats',)
 
-    def get_changelist(self, request, **kwargs):
-        return EventChangeList
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_moderator_reg:
+            return queryset.filter(city=request.user.city)
+        return queryset
+
+    def has_module_permission(self, request):
+        return not request.user.is_anonymous
+
+    def has_view_permission(self, request, obj=None):
+        return not request.user.is_anonymous
+
+    def has_add_permission(self, request):
+        return not request.user.is_anonymous
+
+    def has_change_permission(self, request, obj=None):
+        return not request.user.is_anonymous
+
+    def has_delete_permission(self, request, obj=None):
+        return not request.user.is_anonymous
 
 
 admin.site.register(Event, EventAdmin)
