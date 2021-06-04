@@ -62,14 +62,21 @@ class MainViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
     def get_queryset(self):
-        return [Event.objects.all().latest('start_at')]
+        out = Event.objects.all().order_by('start_at').exists()
+        if out:
+            return Event.objects.all().order_by('-start_at')
+        return Event.objects.all()
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
+        if serializer.data:
+            event_data = {'event': serializer.data[0]}
+        else:
+            event_data = {'event': {}}
 
         response_data = {
-            'event': serializer.data[0],
+            **event_data,
         }
         response_data.update(event)
         return Response(response_data)
