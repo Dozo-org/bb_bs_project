@@ -15,7 +15,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Event.objects.filter(
-                city__in=self.request.user.city.all()).order_by('start_at')
+                city=self.request.user.city).order_by('start_at')
         city_by_id = self.request.query_params.get('city')
         return Event.objects.filter(city=city_by_id).order_by('start_at')
 
