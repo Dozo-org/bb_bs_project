@@ -5,7 +5,7 @@ from afisha.models import Event
 
 
 class TestEventsList:
-    endpoint = '/api/v1/events/'
+    endpoint = '/api/v1/afisha/events/'
 
     @pytest.mark.django_db(transaction=True)
     def test_unauthorized_client(self, city, events, client):
@@ -36,11 +36,10 @@ class TestEventsList:
 
     @pytest.mark.django_db(transaction=True)
     def test_authorized_client(self, events, admin, admin_client, moderator_client):
-        admin_city = admin.city.all()[0]
         baker.make_recipe(
             'tests.fixtures.event',
             _quantity=5,
-            city=admin_city
+            city=admin.city
         )
         response = admin_client.get(self.endpoint)
         test_data = response.json()
@@ -50,7 +49,7 @@ class TestEventsList:
         assert response.status_code == 200, (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать 200'
         )
-        assert len(test_data) == Event.objects.filter(city=admin_city).count(), (
+        assert len(test_data) == Event.objects.filter(city=admin.city).count(), (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать все события в городе пользователя'
         )
         assert len(test_data) < Event.objects.count(), (

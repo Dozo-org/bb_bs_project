@@ -1,6 +1,4 @@
-from model_bakery.recipe import Recipe
 from model_bakery import baker
-from afisha.models import Event
 import pytest
 
 
@@ -17,11 +15,12 @@ def another_city():
 # Events in the same city
 @pytest.fixture
 def event(city):
-    return baker.make_recipe('tests.fixtures.event',city=city,seats=1)
+    return baker.make_recipe('tests.fixtures.event', city=city, seats=1)
+
 
 @pytest.fixture
 def event_another(city):
-    return baker.make_recipe('tests.fixtures.event',city=city)
+    return baker.make_recipe('tests.fixtures.event', city=city)
 
 
 # Events batch in new,created city
@@ -29,12 +28,13 @@ def event_another(city):
 def events():
     return baker.make_recipe('tests.fixtures.event', _quantity=3)
 
+
 # Admin participates in several events
 @pytest.fixture
-def admin_participant(admin,event):
-    return baker.make_recipe('tests.fixtures.event_participant',user=admin,event=event)
+def admin_participant(admin, event):
+    return baker.make_recipe('tests.fixtures.event_participant', user=admin, event=event)
+
 
 @pytest.fixture
-def admin_participant_another(admin,event_another):
-    return baker.make_recipe('tests.fixtures.event_participant',user=admin,event=event_another)
-
+def admin_participant_another(admin, event_another):
+    return baker.make_recipe('tests.fixtures.event_participant', user=admin, event=event_another)
