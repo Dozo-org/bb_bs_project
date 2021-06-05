@@ -4,8 +4,7 @@ import pytest
 
 @pytest.fixture
 def admin(city):
-    admin = baker.make_recipe('tests.fixtures.admin')
-    admin.city.set([city])
+    admin = baker.make_recipe('tests.fixtures.admin', city=city)
     return admin
 
 
