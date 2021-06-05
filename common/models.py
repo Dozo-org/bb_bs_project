@@ -68,3 +68,19 @@ class User(AbstractUser):
     @property
     def is_mentor(self):
         return self.role == 'mentor'
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='profiles')
+    city = models.ForeignKey(City,
+                             on_delete=models.PROTECT,
+                             related_name='profiles')
+
+    class Meta:
+        verbose_name_plural = 'profiles'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'city'],
+                                    name='unique participate')
+        ]
