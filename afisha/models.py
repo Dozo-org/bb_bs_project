@@ -20,6 +20,13 @@ class Event(models.Model):
     city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
                              verbose_name='город', related_name='events')
 
+    class Meta:
+        verbose_name_plural = 'events'
+        constraints = [
+            models.UniqueConstraint(fields=['city', 'start_at', 'title'],
+                                    name='unique event')
+        ]
+
     def __str__(self):
         return self.title
 
@@ -33,7 +40,7 @@ class EventParticipant(models.Model):
                               related_name='participants')
 
     class Meta:
-        verbose_name_plural = 'participate'
+        verbose_name_plural = 'participates'
         constraints = [
             models.UniqueConstraint(fields=['user', 'event'],
                                     name='unique participate')
