@@ -2,11 +2,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticated)
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
+from django.shortcuts import get_object_or_404
 
-from .models import City, User
-from .permissions import (IsAdmin, IsSuperuser)
-from .serializers import CitySerializer, UserSerializer
+from .models import City, User, Profile
+from .permissions import (IsAdmin, IsSuperuser, IsUserOrReadOnly)
+from .serializers import CitySerializer, UserSerializer, ProfileSerializer
 
 
 class CityViewSet(ModelViewSet):
@@ -14,6 +15,35 @@ class CityViewSet(ModelViewSet):
     serializer_class = CitySerializer
     permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
     lookup_field = 'name'
+
+
+class ProfileViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated, IsUserOrReadOnly | IsSuperuser)
+    serializer_class = ProfileSerializer
+    http_method_names = ['get', 'put', 'patch']
+
+    def get_queryset(self):
+        return Profile.objects.filter(username=self.request.user)
+
+    def partial_update(self, request, *args, **kwargs):
+        user = get_object_or_404(User, username=request.user)
+        city = get_object_or_404(pk=request.data['city'])
+        serializer = self.get_serializer(
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user, city=city)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        user = get_object_or_404(User, username=request.user)
+        city = get_object_or_404(City, pk=request.data['city'])
+        serializer = self.get_serializer(
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user, city=city)
+        return Response(serializer.data)
 
 
 class UsersViewSet(ModelViewSet):
