@@ -18,8 +18,8 @@ urlpatterns = [
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/v1/', include(v1_router.urls)), # TODO: remove version
+    path('api/v1/', include(v1_router.urls)),  # TODO: remove version
     path('api/v1/profile/', UsersViewSet.as_view({'get': 'list',
-                                    'patch': 'partial_update',
-                                    'put': 'update'})),
+                                                  'patch': 'partial_update',
+                                                  'put': 'update'})),
 ]
