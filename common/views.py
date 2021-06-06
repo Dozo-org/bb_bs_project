@@ -27,7 +27,7 @@ class ProfileViewSet(ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=request.user)
-        city = get_object_or_404(pk=request.data['city'])
+        city = get_object_or_404(User, pk=request.data['city'])
         serializer = self.get_serializer(
             instance=request.user.profile,
             data=request.data,
