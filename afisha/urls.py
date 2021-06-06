@@ -1,4 +1,5 @@
 from django.urls import include, path
+
 from .routers import CustomRouter
 from .views import EventViewSet, EventParticipantViewSet, MainViewSet
 

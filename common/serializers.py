@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.serializers import CurrentUserDefault
 
 from .models import User, City, Profile
 

@@ -5,7 +5,6 @@ from rest_framework_simplejwt import views as jwt_views
 from afisha.routers import CustomRouter
 from afisha.urls import router as afisha_router
 from common.urls import router as common_router
-from common.views import UsersViewSet
 
 v1_router = CustomRouter()
 v1_router.registry.extend(afisha_router.registry)
@@ -18,5 +17,5 @@ urlpatterns = [
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/v1/', include(v1_router.urls)),  # TODO: remove version
+    path('api/v1/', include(v1_router.urls)),
 ]

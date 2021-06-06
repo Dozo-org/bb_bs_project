@@ -1,10 +1,12 @@
 from model_bakery import baker
 import pytest
 
+from common.models import Profile
+
 
 @pytest.fixture
 def admin(city):
-    admin = baker.make_recipe('tests.fixtures.admin', city=city)
+    admin = baker.make_recipe('tests.fixtures.admin')
     return admin
 
 
@@ -49,3 +51,8 @@ def moderator_client(token_for_moderator):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token_for_moderator["access"]}')
     return client
+
+
+@pytest.fixture
+def admin_profile(admin, city):
+    return Profile.objects.create(user=admin, city=city)
