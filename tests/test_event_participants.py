@@ -57,7 +57,7 @@ class TestEventParticipants:
     @pytest.mark.django_db
     def test_create_authorized(
             self, admin, admin_client, moderator, moderator_client,
-            event, event_another, events
+            event, event_another, events, admin_profile
     ):
         participants_count = EventParticipant.objects.count()
         data = {}
@@ -102,7 +102,7 @@ class TestEventParticipants:
         # Проверяем флаг booked
         response = admin_client.get('/api/v1/afisha/events/')
         test_data = response.json()
-        assert len(test_data) == Event.objects.filter(city=admin.city).count()
+        assert len(test_data) == Event.objects.filter(city=admin_profile.city).count()
         event_booked = test_data[0]
         assert event_booked.get('booked') == True, (
             'Поле booked должно быть True если пользователь зарегестрирован'
