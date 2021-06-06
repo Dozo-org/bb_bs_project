@@ -1,10 +1,10 @@
 from rest_framework import serializers
+from rest_framework.serializers import CurrentUserDefault
 
-from .models import User, City
+from .models import User, City, Profile
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = (
             'id',
@@ -17,8 +17,14 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
-class CitySerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        fields = '__all__'
+        model = Profile
+
+
+class CitySerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = City

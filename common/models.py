@@ -73,7 +73,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                related_name='profiles')
+                                related_name='profile')
     city = models.ForeignKey(City,
                              on_delete=models.PROTECT,
                              related_name='profiles')
