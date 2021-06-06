@@ -1,12 +1,11 @@
 import pytest
 from model_bakery import baker
 
-from events.models import Event, EventParticipant
-from user.models import User, City
+from afisha.models import Event, EventParticipant
 
 
 class TestEventParticipants:
-    endpoint = '/api/v1/event-participants/'
+    endpoint = '/api/v1/afisha/event-participants/'
 
     @pytest.mark.django_db(transaction=True)
     def test_list_unauthorized(self, client):
@@ -58,7 +57,7 @@ class TestEventParticipants:
     @pytest.mark.django_db
     def test_create_authorized(
             self, admin, admin_client, moderator, moderator_client,
-            event, event_another, events
+            event, event_another, events, admin_profile
     ):
         participants_count = EventParticipant.objects.count()
         data = {}
@@ -101,9 +100,9 @@ class TestEventParticipants:
             'Регистрация на событие в другом городе должна быть возможна'
         )
         # Проверяем флаг booked
-        response = admin_client.get('/api/v1/events/')
+        response = admin_client.get('/api/v1/afisha/events/')
         test_data = response.json()
-        assert len(test_data) == Event.objects.filter(city__in=admin.city.all()).count()
+        assert len(test_data) == Event.objects.filter(city=admin_profile.city).count()
         event_booked = test_data[0]
         assert event_booked.get('booked') == True, (
             'Поле booked должно быть True если пользователь зарегестрирован'
@@ -129,7 +128,7 @@ class TestEventParticipants:
         taken_seats_counter = event.taken_seats
         participants_count = EventParticipant.objects.filter(user=admin).count()
         data = {'event': event.id}
-        response = admin_client.delete(self.endpoint,data=data, format='json')
+        response = admin_client.delete(self.endpoint, data=data, format='json')
         event.refresh_from_db()
         assert response.status_code == 204, (
             f'DELETE запрос {self.endpoint} должен вернуть 204'
