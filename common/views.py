@@ -29,6 +29,8 @@ class ProfileViewSet(ModelViewSet):
         user = get_object_or_404(User, username=request.user)
         city = get_object_or_404(pk=request.data['city'])
         serializer = self.get_serializer(
+            instance=request.user.profile,
+            data=request.data,
             partial=True
         )
         serializer.is_valid(raise_exception=True)
@@ -39,6 +41,8 @@ class ProfileViewSet(ModelViewSet):
         user = get_object_or_404(User, username=request.user)
         city = get_object_or_404(City, pk=request.data['city'])
         serializer = self.get_serializer(
+            instance=request.user.profile,
+            data=request.data,
             partial=True
         )
         serializer.is_valid(raise_exception=True)
