@@ -8,7 +8,9 @@ class CustomRouter(DefaultRouter):
             mapping={
                 'get': 'list',
                 'post': 'create',
-                'delete': 'destroy'},
+                'delete': 'destroy',
+                'put': 'update',
+                'patch': 'partial_update'},
             name='{basename}-list',
             detail=False,
             initkwargs={'suffix': 'List'}
