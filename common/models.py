@@ -39,12 +39,6 @@ class User(AbstractUser):
         max_length=255,
         unique=True
     )
-    city = models.ForeignKey(
-        City,
-        related_name='users',
-        on_delete=models.DO_NOTHING,
-        blank=True,
-        null=True)
 
     class Meta:
         verbose_name = 'user'
