@@ -6,7 +6,7 @@ from .models import User, City
 @register(User)
 class UserAdmin(ModelAdmin):
 
-    list_display = ('username', 'role', 'email', 'city')
+    list_display = ('username', 'role', 'email')
     empty_value_display = '-пусто-'
 
 
