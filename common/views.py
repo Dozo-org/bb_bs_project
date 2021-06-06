@@ -23,7 +23,7 @@ class ProfileViewSet(ModelViewSet):
     http_method_names = ['get', 'put', 'patch']
 
     def get_queryset(self):
-        return Profile.objects.filter(username=self.request.user)
+        return Profile.objects.filter(user=self.request.user)
 
     def partial_update(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=request.user)
