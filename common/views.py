@@ -11,7 +11,7 @@ from .serializers import CitySerializer, UserSerializer, ProfileSerializer
 
 
 class CityViewSet(ModelViewSet):
-    queryset = City.objects.all().order_by('-isPrimary')
+    queryset = City.objects.all().order_by('-isPrimary', '-name')
     serializer_class = CitySerializer
     permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
     lookup_field = 'name'
@@ -59,8 +59,7 @@ class UsersViewSet(ModelViewSet):
             username=self.request.user
         )
 
-    action(detail=False, methods=['patch'])
-
+    @action(detail=False, methods=['patch'])
     def partial_update(self, request):
         if (
                 request.user.role != 'admin'
@@ -79,8 +78,7 @@ class UsersViewSet(ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
-    action(detail=False, methods=['put'])
-
+    @action(detail=False, methods=['put'])
     def update(self, request):
         if (
                 request.user.role != 'admin'
