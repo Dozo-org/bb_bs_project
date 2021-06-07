@@ -11,7 +11,7 @@ from .serializers import CitySerializer, UserSerializer, ProfileSerializer
 
 
 class CityViewSet(ModelViewSet):
-    queryset = City.objects.all().order_by('-isPrimary', '-name')
+    queryset = City.objects.all().order_by('-isPrimary', 'name')
     serializer_class = CitySerializer
     permission_classes = (IsAuthenticated, IsSuperuser | IsAdmin)
     lookup_field = 'name'
