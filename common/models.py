@@ -1,8 +1,11 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class City(models.Model):
+
     name = models.CharField(
         max_length=30,
         verbose_name='city'
@@ -20,6 +23,7 @@ class City(models.Model):
 
 
 class User(AbstractUser):
+
     class RoleUser(models.TextChoices):
         USER = 'user', 'Пользователь'
         MENTOR = 'mentor', 'Наставник'
@@ -33,11 +37,6 @@ class User(AbstractUser):
         blank=True,
         choices=RoleUser.choices,
         default=RoleUser.USER
-    )
-    email = models.EmailField(
-        verbose_name='email',
-        max_length=255,
-        unique=True
     )
 
     class Meta:
@@ -65,12 +64,33 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,
-                                on_delete=models.CASCADE,
-                                related_name='profile')
-    city = models.ForeignKey(City,
-                             on_delete=models.PROTECT,
-                             related_name='profiles')
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        verbose_name='Profile'
+    )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.SET_NULL,
+        related_name='profiles',
+        null=True,
+        blank=True,
+        verbose_name='City',
+        default=False
+    )
+
+    def __str__(self):
+        return self.user.username
 
     class Meta:
-        verbose_name_plural = 'profiles'
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """ Создаем профиль при создании юзера"""
+    if created:
+        Profile.objects.create(user=instance, city=instance)
