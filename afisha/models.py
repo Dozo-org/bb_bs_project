@@ -12,10 +12,10 @@ class Event(models.Model):
     contact = models.CharField(max_length=200, verbose_name='контакт')
     title = models.CharField(max_length=200, verbose_name='название')
     description = models.TextField(verbose_name='описание')
-    start_at = models.DateTimeField(verbose_name='начало')
-    end_at = models.DateTimeField(verbose_name='окончание')
+    startAt = models.DateTimeField(verbose_name='начало')
+    endAt = models.DateTimeField(verbose_name='окончание')
     seats = models.IntegerField(verbose_name='количество мест')
-    taken_seats = models.IntegerField(default=0,
+    takenSeats = models.IntegerField(default=0,
                                       verbose_name='количество занятых мест')
     city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
                              verbose_name='город', related_name='events')
@@ -23,7 +23,7 @@ class Event(models.Model):
     class Meta:
         verbose_name_plural = 'events'
         constraints = [
-            models.UniqueConstraint(fields=['city', 'start_at', 'title'],
+            models.UniqueConstraint(fields=['city', 'startAt', 'title'],
                                     name='unique event')
         ]
 
