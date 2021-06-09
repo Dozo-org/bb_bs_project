@@ -87,10 +87,13 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'city'], name='Profile value unique')
+        ]
 
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     """ Создаем профиль при создании юзера"""
     if created:
-        Profile.objects.create(user=instance, city=instance)
+        Profile.objects.create(user=instance, city=None)
