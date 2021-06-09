@@ -15,9 +15,9 @@ class EventViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Event.objects.filter(
-                city=self.request.user.profile.city).order_by('start_at')
+                city=self.request.user.profile.city).order_by('startAt')
         city_by_id = self.request.query_params.get('city')
-        return Event.objects.filter(city=city_by_id).order_by('start_at')
+        return Event.objects.filter(city=city_by_id).order_by('startAt')
 
 
 class EventParticipantViewSet(viewsets.ModelViewSet):
@@ -62,9 +62,9 @@ class MainViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
     def get_queryset(self):
-        out = Event.objects.all().order_by('start_at').exists()
+        out = Event.objects.all().order_by('startAt').exists()
         if out:
-            return Event.objects.all().order_by('-start_at')
+            return Event.objects.all().order_by('-startAt')
         return Event.objects.all()
 
     def list(self, request, *args, **kwargs):

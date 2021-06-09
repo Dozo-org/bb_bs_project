@@ -4,13 +4,13 @@ from .models import Event
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('city', 'title', 'start_at', 'end_at', 'seats',
-                    'taken_seats')
-    search_fields = ('title', 'city', 'start_at', 'end_at')
-    list_filter = ('title', 'city', 'start_at', 'end_at')
+    list_display = ('city', 'title', 'startAt', 'endAt', 'seats',
+                    'takenSeats')
+    search_fields = ('title', 'city', 'startAt', 'endAt')
+    list_filter = ('title', 'city', 'startAt', 'endAt')
     ordering = ('city',)
     empty_value_display = '-пусто-'
-    readonly_fields = ('taken_seats',)
+    readonly_fields = ('takenSeats',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
