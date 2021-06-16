@@ -102,3 +102,4 @@ class Place(models.Model):
 
     def get_activity_type(self, type_code):
         return self.ActivityTypes(type_code).label
+
