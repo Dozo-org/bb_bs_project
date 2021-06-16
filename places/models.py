@@ -8,7 +8,6 @@ class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
 
-    # TODO: def values_list()
 
     class Meta:
         ordering = ('name',)
@@ -95,7 +94,7 @@ class Place(models.Model):
         return self.title
 
     def list_tags(self):
-        return self.tag.values_list('name')
+        return self.tag.values_list('name',flat=True)
 
     def get_gender(self, gender_code):
         return self.Genders(gender_code).label

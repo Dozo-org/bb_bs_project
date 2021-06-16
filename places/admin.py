@@ -1,3 +1,22 @@
-from django.contrib import admin
+from django.contrib.admin import ModelAdmin, register
 
-# Register your models here.
+from .models import Tag, Place
+
+
+@register(Tag)
+class TagAdmin(ModelAdmin):
+    list_display = ('name', 'slug')
+    ordering = ('name',)
+
+
+'''@register(Place)
+class PlaceAdmin(ModelAdmin):
+    list_display = (
+        'title', 'info', 'address', 'city', 'description',
+        'chosen', 'gender', 'age',
+        'activity_type', 'link', 'imageUrl', 'get_tags'
+    )
+    search_fields = ('title', 'city', 'tag')
+    list_filter = ('chosen', 'activity_type', 'age')
+    empty_value_display = '-пусто-'
+    ordering = ('title',)'''

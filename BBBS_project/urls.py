@@ -5,10 +5,12 @@ from rest_framework_simplejwt import views as jwt_views
 from afisha.routers import CustomRouter
 from afisha.urls import router as afisha_router
 from common.urls import router as common_router
+from places.urls import router as places_router
 
 v1_router = CustomRouter()
 v1_router.registry.extend(afisha_router.registry)
 v1_router.registry.extend(common_router.registry)
+v1_router.registry.extend(places_router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
