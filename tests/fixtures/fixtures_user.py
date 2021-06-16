@@ -53,6 +53,6 @@ def moderator_client(token_for_moderator):
     return client
 
 
-@pytest.fixture
+'''@pytest.fixture
 def admin_profile(admin, city):
-    return Profile.objects.create(user=admin, city=city)
+    return Profile.objects.create(user=admin, city=city)'''

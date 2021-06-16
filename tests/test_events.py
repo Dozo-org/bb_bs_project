@@ -37,13 +37,16 @@ class TestEventsList:
     @pytest.mark.django_db(transaction=True)
     def test_authorized_client(
             self, events, admin,
-            admin_client, moderator_client, admin_profile,
+            admin_client, moderator_client, city
     ):
         baker.make_recipe(
             'tests.fixtures.event',
             _quantity=5,
-            city=admin_profile.city
+            city=city
         )
+        for _ in Event.objects.all():
+            print(_.city)
+        admin.profile.city=city
         response = admin_client.get(self.endpoint)
         test_data = response.json()
         assert response.status_code != 404, (
@@ -52,7 +55,7 @@ class TestEventsList:
         assert response.status_code == 200, (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать 200'
         )
-        assert len(test_data) == Event.objects.filter(city=admin_profile.city).count(), (
+        assert len(test_data) == Event.objects.filter(city=admin.profile.city).count(), (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать все события в городе пользователя'
         )
         assert len(test_data) < Event.objects.count(), (
@@ -71,20 +74,20 @@ class TestEventsList:
         assert 'description' in test_event, (
             'description нет в списке полей сериализатора модели Event '
         )
-        assert 'start_at' in test_event, (
-            'start_at нет в списке полей сериализатора модели Event '
+        assert 'startAt' in test_event, (
+            'startAt нет в списке полей сериализатора модели Event '
         )
-        assert 'end_at' in test_event, (
-            'end_at нет в списке полей сериализатора модели Event '
+        assert 'endAt' in test_event, (
+            'endAt нет в списке полей сериализатора модели Event '
         )
         assert 'seats' in test_event, (
             'seats нет в списке полей сериализатора модели Event '
         )
-        assert 'taken_seats' in test_event, (
-            'taken_seats нет в списке полей сериализатора модели Event '
+        assert 'takenSeats' in test_event, (
+            'takenSeats нет в списке полей сериализатора модели Event '
         )
         assert 'city' in test_event, (
-            'taken_seats нет в списке полей сериализатора модели Event '
+            'city нет в списке полей сериализатора модели Event '
         )
         assert 'booked' in test_event, (
             'booked нет в списке полей сериализатора модели Event '
