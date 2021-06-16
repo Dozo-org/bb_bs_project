@@ -21,6 +21,7 @@ admin = Recipe(
 
 moderator = Recipe(
     User,
+    username=seq('moderator'),
     password=seq('PassWord'),
     email=seq('moderator', suffix='@gmail.com'),
     role='moderator'

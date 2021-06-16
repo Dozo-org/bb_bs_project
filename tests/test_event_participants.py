@@ -1,4 +1,4 @@
-'''import pytest
+import pytest
 from model_bakery import baker
 
 from afisha.models import Event, EventParticipant
@@ -138,4 +138,4 @@ class TestEventParticipants:
         )
         assert event.takenSeats == taken_seats_counter - 1, (
             f'DELETE запрос {self.endpoint} должен изменить значение поля takenSeats у объекта Event'
-        )'''
+        )
