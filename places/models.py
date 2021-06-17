@@ -32,6 +32,10 @@ class Place(models.Model):
         verbose_name=_('Выбор наставника'),
         default=False,
     )
+    verified = models.BooleanField(
+        default=False,
+        verbose_name=_('Проверено для публикации'),
+    )
     title = models.CharField(
         verbose_name=_('Название'),
         max_length=200,
