@@ -40,10 +40,6 @@ class Place(models.Model):
         verbose_name=_('Название'),
         max_length=200,
     )
-    info = models.CharField(
-        verbose_name=_('Информация'),
-        max_length=200,
-    )
     address = models.CharField(
         verbose_name=_('Адрес'),
         max_length=200,

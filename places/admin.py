@@ -12,7 +12,7 @@ class TagAdmin(ModelAdmin):
 @register(Place)
 class PlaceAdmin(ModelAdmin):
     list_display = (
-        'title', 'info', 'address', 'city', 'description',
+        'title', 'address', 'city', 'description',
         'chosen', 'gender', 'age',
         'activity_type', 'link', 'imageUrl'
     )
