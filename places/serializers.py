@@ -13,7 +13,7 @@ class InfoField(serializers.Field):
         return display
 
 
-class PlaceSerializer(serializers.ModelSerializer):
+class PlaceReadSerializer(serializers.ModelSerializer):
     info = InfoField(source='*')
 
     class Meta:
@@ -22,6 +22,23 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     def get_gender(self, obj):
         return obj.get_gender_display()
+
+
+class PlaceWriteSerializer(serializers.ModelSerializer):
+    info = InfoField(source='*', read_only=True)
+
+    class Meta:
+        model = Place
+        fields = [
+            'info',
+            'chosen',
+            'title',
+            'address',
+            'description',
+            'link',
+            'city'
+        ]
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

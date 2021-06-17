@@ -9,14 +9,14 @@ class TagAdmin(ModelAdmin):
     ordering = ('name',)
 
 
-'''@register(Place)
+@register(Place)
 class PlaceAdmin(ModelAdmin):
     list_display = (
         'title', 'info', 'address', 'city', 'description',
         'chosen', 'gender', 'age',
-        'activity_type', 'link', 'imageUrl', 'get_tags'
+        'activity_type', 'link', 'imageUrl'
     )
     search_fields = ('title', 'city', 'tag')
     list_filter = ('chosen', 'activity_type', 'age')
     empty_value_display = '-пусто-'
-    ordering = ('title',)'''
+    ordering = ('title',)

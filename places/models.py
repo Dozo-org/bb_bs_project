@@ -50,7 +50,7 @@ class Place(models.Model):
     )
     city = models.ForeignKey(
         City,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name=_('Город'),
         related_name='places'
     )
