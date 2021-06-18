@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from common.models import City
 
 
-class Tag(models.Model):
+class PlaceTag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
-
 
     class Meta:
         ordering = ('name',)
@@ -60,7 +60,8 @@ class Place(models.Model):
     age = models.PositiveSmallIntegerField(
         verbose_name=_('Возраст'),
         blank=True,
-        null=True
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(25)]
     )
     activity_type = models.PositiveSmallIntegerField(
         verbose_name=_('Тип отдыха'),
@@ -76,7 +77,7 @@ class Place(models.Model):
         null=True,
         blank=True,
     )
-    tag = models.ManyToManyField(Tag, related_name='places', blank=True)
+    tags = models.ManyToManyField(PlaceTag, related_name='places', blank=True)
     imageUrl = models.ImageField(
         verbose_name=_('Фото'),
         help_text=_('Добавить фото'),
@@ -84,9 +85,13 @@ class Place(models.Model):
         blank=True,
         upload_to='places/',
     )
+    pubDate = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата публикации'
+    )
 
     class Meta:
-        ordering = ('title', )
+        ordering = ('-pubDate',)
         verbose_name = _('Место - куда пойти?')
         verbose_name_plural = _('Места - куда пойти?')
 
@@ -94,11 +99,10 @@ class Place(models.Model):
         return self.title
 
     def list_tags(self):
-        return self.tag.values_list('name',flat=True)
+        return self.tags.values_list('name', flat=True)
 
     def get_gender(self, gender_code):
         return self.Genders(gender_code).label
 
     def get_activity_type(self, type_code):
         return self.ActivityTypes(type_code).label
-

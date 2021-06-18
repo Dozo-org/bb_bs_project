@@ -1,9 +1,9 @@
 from django.contrib.admin import ModelAdmin, register
 
-from .models import Tag, Place
+from .models import PlaceTag, Place
 
 
-@register(Tag)
+@register(PlaceTag)
 class TagAdmin(ModelAdmin):
     list_display = ('name', 'slug')
     ordering = ('name',)
@@ -12,7 +12,7 @@ class TagAdmin(ModelAdmin):
 @register(Place)
 class PlaceAdmin(ModelAdmin):
     list_display = (
-        'title', 'address', 'city', 'description',
+        'title', 'address', 'city','pubDate', 'description',
         'chosen', 'gender', 'age',
         'activity_type', 'link', 'imageUrl'
     )
