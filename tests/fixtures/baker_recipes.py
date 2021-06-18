@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 from afisha.models import Event, EventParticipant
 from common.models import City
-from places.models import Place, Tag
+from places.models import Place, PlaceTag
 
 User = get_user_model()
 
@@ -42,7 +42,7 @@ event_participant = Recipe(
 )
 
 tag = Recipe(
-    Tag,
+    PlaceTag,
     name=seq('Tag_name'),
     slug=seq('tag-')
 )

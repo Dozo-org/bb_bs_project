@@ -1,7 +1,7 @@
 import pytest
 from model_bakery import baker
 
-from places.models import Tag, Place
+from places.models import PlaceTag, Place
 
 
 class PlacesTags:
@@ -17,6 +17,6 @@ class PlacesTags:
         assert response.status_code == 200, (
             f'{self.endpoint} для неавторизованного пользователя должен вернуть 200'
         )
-        assert Tag.objects.count() == len(test_data), (
+        assert PlaceTag.objects.count() == len(test_data), (
             f'{self.endpoint} для неавторизованного пользователя должен вернуть все объекты Tags'
         )
