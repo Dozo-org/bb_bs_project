@@ -15,7 +15,7 @@ class EventAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         if request.user.is_moderator_reg:
-            return queryset.filter(city=request.user.city)
+            return queryset.filter(city=request.user.profile.city)
         return queryset
 
     def has_module_permission(self, request):
