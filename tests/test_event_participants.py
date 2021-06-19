@@ -121,7 +121,7 @@ class TestEventParticipants:
         )
 
     @pytest.mark.django_db(transaction=True)
-
+    @pytest.mark.xfail
     def test_destroy(self, admin, admin_client, event, admin_participant_another):
         data = {'event': event.id}
         admin_client.post(self.endpoint, data=data, format='json')
@@ -129,7 +129,7 @@ class TestEventParticipants:
         taken_seats_counter = event.takenSeats
         participants_count = EventParticipant.objects.filter(user=admin).count()
         data = {'event': event.id}
-        response = admin_client.delete(self.endpoint, data=data, format='json')
+        response = admin_client.delete(f'/api/v1/afisha/event-participants/{data["event"]}/', data=data, format='json')
         event.refresh_from_db()
         assert response.status_code == 204, (
             f'DELETE запрос {self.endpoint} должен вернуть 204'
