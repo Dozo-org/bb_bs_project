@@ -36,6 +36,10 @@ class Place(models.Model):
         default=False,
         verbose_name=_('Проверено для публикации'),
     )
+    showOnMain = models.BooleanField(
+        verbose_name=_('Показать на главной'),
+        default=True,
+    )
     title = models.CharField(
         verbose_name=_('Название'),
         max_length=200,
@@ -77,7 +81,12 @@ class Place(models.Model):
         null=True,
         blank=True,
     )
-    tags = models.ManyToManyField(PlaceTag, related_name='places', blank=True)
+    tags = models.ManyToManyField(
+        PlaceTag,
+        related_name='places',
+        blank=True,
+        verbose_name=_('Теги')
+    )
     imageUrl = models.ImageField(
         verbose_name=_('Фото'),
         help_text=_('Добавить фото'),

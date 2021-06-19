@@ -8,6 +8,5 @@ class PlacesFilter(django_filters.FilterSet):
         model = Place
         fields = {
             'age': ['lte', 'gte'],
-            'tags': ['contains',], # TODO: filter by tags doesnt work
+            'tags__slug': ['in']
         }
-

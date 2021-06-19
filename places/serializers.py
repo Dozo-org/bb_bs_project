@@ -30,19 +30,15 @@ class PlaceReadSerializer(serializers.ModelSerializer):
             'city'
         ]
 
-    def get_gender(self, obj):
-        return obj.get_gender_display()
+
 
 
 class PlaceWriteSerializer(serializers.ModelSerializer):
     info = InfoField(source='*', read_only=True)
     imageUrl = serializers.ImageField(read_only=True)
     id = serializers.IntegerField(read_only=True)
-    chosen = serializers.SerializerMethodField('get_chosen')
+    chosen = serializers.BooleanField(read_only=True)
 
-    def get_chosen(self, obj):  # TODO: place in view, when updated/created
-        user = self.context['request'].user
-        return user.is_mentor
 
     class Meta:
         model = Place
@@ -50,6 +46,9 @@ class PlaceWriteSerializer(serializers.ModelSerializer):
             'id',
             'info',
             'chosen',
+            'activity_type',
+            'age',
+            'gender',
             'title',
             'address',
             'description',
