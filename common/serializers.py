@@ -16,14 +16,19 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        fields = '__all__'
-        model = Profile
-
-
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = City
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    city = CitySerializer()
+
+    class Meta:
+        fields = (
+            'id',
+            'user',
+            'city',
+        )
+        model = Profile
