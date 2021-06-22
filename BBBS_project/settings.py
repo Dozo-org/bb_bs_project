@@ -1,4 +1,3 @@
-
 import datetime
 import os
 from pathlib import Path
@@ -27,6 +26,7 @@ INSTALLED_APPS = [
     'django_filters',
     'common',
     'afisha',
+    'rights',
 ]
 
 MIDDLEWARE = [
