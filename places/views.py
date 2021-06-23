@@ -26,7 +26,7 @@ class PlacesListViewSet(CustomViewSet):
             profile = get_object_or_404(Profile, user=self.request.user)
             return Place.objects.filter(city=profile.city, verified=True)
         city = self.request.query_params.get('city')
-        return Place.objects.filter(verified=True,city=city)
+        return Place.objects.filter(verified=True,city__name=city)
 
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='tags')
