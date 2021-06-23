@@ -53,3 +53,12 @@ class PlaceAdmin(ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return not request.user.is_anonymous
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(PlaceAdmin, self).get_form(request, obj, **kwargs)
+        if request.user.is_moderator_reg:
+            form.base_fields['city'].initial = request.user.profile.city
+            form.base_fields['city'].disabled = True
+            form.base_fields['city'].help_text = 'Вы можете добавить рекомендацию только в своем городе'
+        return form
+
