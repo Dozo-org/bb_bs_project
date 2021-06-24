@@ -8,8 +8,6 @@ from afisha.views import EventViewSet, MainViewSet, EventParticipantViewSet
 from places.views import PlaceRetreiveUpdate, PlacesListViewSet
 
 v1_router = DefaultRouter()
-
-
 v1_router.register(r'afisha/events', EventViewSet, basename='event')
 v1_router.register(r'afisha/event-participants', EventParticipantViewSet,
                 basename='event-participant')
@@ -18,6 +16,7 @@ v1_router.register(r'cities', CityViewSet, basename='city_list')
 v1_router.register(r'profile', ProfileViewSet, basename='profile')
 v1_router.register(r'places', PlacesListViewSet, basename='places')
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/token/', jwt_views.TokenObtainPairView.as_view(),
@@ -25,6 +24,7 @@ urlpatterns = [
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/v1/', include(v1_router.urls)),
     path('api/v1/place/', PlaceRetreiveUpdate.as_view()),
+    path('api/v1/', include('rights.urls')),
+    path('api/v1/', include(v1_router.urls)),
 ]
