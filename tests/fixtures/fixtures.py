@@ -38,3 +38,7 @@ def admin_participant(admin, event):
 @pytest.fixture
 def admin_participant_another(admin, event_another):
     return baker.make_recipe('tests.fixtures.event_participant', user=admin, event=event_another)
+
+@pytest.fixture
+def tags():
+    return baker.make_recipe('tests.fixtures.tag',_quantity=11)

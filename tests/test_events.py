@@ -22,7 +22,7 @@ class TestEventsList:
         assert response.status_code == 200, (
             f'Адрес {self.endpoint} для неавторизованного пользователя должен вернуть 200'
         )
-        assert len(test_data) == 0, (
+        assert len(test_data.get('results')) == 0, (
             f'Запрос к {self.endpoint} без GET параметра не должен возвращать объекты'
         )
         response = client.get(self.endpoint + f'?city={city.id}')
@@ -30,19 +30,19 @@ class TestEventsList:
         assert response.status_code == 200, (
             f'Запрос к {self.endpoint} с GET параметром city должен вернуть 200'
         )
-        assert len(test_data) == 5, (
+        assert len(test_data.get('results')) == 5, (
             f'Запрос к {self.endpoint} GET параметром city должен вернуть только мероприятия в городе {city}'
         )
 
     @pytest.mark.django_db(transaction=True)
     def test_authorized_client(
-            self, events, admin,
-            admin_client, moderator_client, admin_profile,
+            self, city, events, admin,
+            admin_client, moderator_client
     ):
         baker.make_recipe(
             'tests.fixtures.event',
             _quantity=5,
-            city=admin_profile.city
+            city=city
         )
         response = admin_client.get(self.endpoint)
         test_data = response.json()
@@ -52,13 +52,13 @@ class TestEventsList:
         assert response.status_code == 200, (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать 200'
         )
-        assert len(test_data) == Event.objects.filter(city=admin_profile.city).count(), (
+        assert Event.objects.filter(city=admin.profile.city).count() == 5, (
             f'Запрос к {self.endpoint} с токеном авторизации должен возвращать все события в городе пользователя'
         )
         assert len(test_data) < Event.objects.count(), (
             f'{self.endpoint} с токеном не должен возвращать события в других городах'
         )
-        test_event = test_data[0]
+        test_event = test_data['results'][0]
         assert 'address' in test_event, (
             'address нет в списке полей сериализатора модели Event '
         )
@@ -71,30 +71,29 @@ class TestEventsList:
         assert 'description' in test_event, (
             'description нет в списке полей сериализатора модели Event '
         )
-        assert 'start_at' in test_event, (
-            'start_at нет в списке полей сериализатора модели Event '
+        assert 'startAt' in test_event, (
+            'startAt нет в списке полей сериализатора модели Event '
         )
-        assert 'end_at' in test_event, (
-            'end_at нет в списке полей сериализатора модели Event '
+        assert 'endAt' in test_event, (
+            'endAt нет в списке полей сериализатора модели Event '
         )
         assert 'seats' in test_event, (
             'seats нет в списке полей сериализатора модели Event '
         )
-        assert 'taken_seats' in test_event, (
-            'taken_seats нет в списке полей сериализатора модели Event '
+        assert 'takenSeats' in test_event, (
+            'takenSeats нет в списке полей сериализатора модели Event '
         )
         assert 'city' in test_event, (
-            'taken_seats нет в списке полей сериализатора модели Event '
+            'city нет в списке полей сериализатора модели Event '
         )
         assert 'booked' in test_event, (
             'booked нет в списке полей сериализатора модели Event '
         )
-        # TODO: allow city to be empty
-        '''response = moderator_client.get(self.endpoint)
+        response = moderator_client.get(self.endpoint)
         test_data = response.json()
         assert response.status_code == 200, (
             f'Адрес {self.endpoint} доступен для авторизованного пользователя с пустым полем города'
         )
-        assert len(test_data) == 0, (
+        assert len(test_data.get('results')) == 0, (
             f'Запрос к {self.endpoint} от пользователя с пустым полем города возвращает пустой ответ'
-        )'''
+        )
