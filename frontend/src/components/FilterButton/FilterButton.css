@@ -1,0 +1,41 @@
+.filters__item {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  }
+
+  .filters__button {
+    border: 1px solid #000000;
+    border-radius: 100px;
+  background: transparent;
+  font-family: Proto Grotesk Web Light;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  padding: 14px 20px;
+  }
+
+  .filters__button:focus {
+    outline: none;
+  }
+
+  .filters__button:hover {
+    cursor: pointer;
+    background: #E0E0E0;
+  }
+
+  @media (max-width: 1024px) {
+    .filters__button  {
+      font-size: 12px;
+      line-height: 17px;
+      padding: 11px 15px;
+      white-space: nowrap;
+    }
+  }
+
+  .menu__button_active {
+    background: #000;
+    color: #F3F2F2;
+  }

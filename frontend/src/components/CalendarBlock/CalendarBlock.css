@@ -1,0 +1,282 @@
+
+
+.list__element{
+  margin: 0;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  max-width: 570px;
+  min-height: 414px;
+  background: #FFFFFF;
+  border-radius: 30px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .list__element{
+      min-height: 382px;
+      padding: 30px 15px;
+  }
+}
+@media (max-width: 640px) {
+  .list__element{
+      min-height: 382px;
+  }
+}
+
+.list__submit{
+  margin: 0;
+  padding: 0;
+  width: 127px;
+  height: 48px;
+  border: 1px solid #224CFF;
+  border-radius: 100px;
+  box-sizing: border-box;
+  font-family: 'Proto Grotesk Web Light';
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #224CFF;
+  font-style: normal;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+
+.list__submit:hover {
+background:#C8D1FF;
+}
+
+.list__submit:focus{
+outline: none;
+}
+@media (max-width: 1024px) {
+  .list__submit{
+      font-size: 12px;
+      line-height: 17px;
+      width: 100px;
+      height: 40px;
+  }
+}
+
+.list__header{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+}
+
+.list__caption{
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #464646;
+  margin: 0;
+
+}
+@media (max-width: 1024px) {
+  .list__caption{
+      font-size: 12px;
+      line-height: 17px;
+  }
+}
+
+.list__date{
+  font-family: 'PT Root UI';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+  margin-right: 0;
+}
+@media (max-width: 1024px) {
+  .list__date{
+      font-size: 12px;
+      line-height: 17px;
+  }
+}
+
+.list__theme{
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+.list__theme{
+  margin-top: 5px;
+  margin-bottom: auto;
+}
+}
+
+
+.list__title{
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  max-width: 320px;
+  font-family: 'Proto Grotesk Web Light';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 23px;
+  line-height: 30px;
+  color: #000000;
+}
+@media (max-width: 1024px) {
+  .list__title{
+      font-size: 19px;
+      line-height: 23px;
+  }
+}
+
+
+.list__number{
+  margin: 0;
+  padding: 0;
+  max-width: 133px;
+  font-family: 'Proto Grotesk Web Light';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 100px;
+  line-height: 100px;
+  letter-spacing: -2px;
+  color: #000000;
+}
+@media (max-width: 1024px) {
+  .list__number{
+      font-size: 60px;
+      line-height: 60px;
+  }
+}
+
+@media (max-width: 400px) {
+  .list__number{
+    margin-left: 9px;
+  }
+}
+
+.list__contacts{
+  margin: 0;
+  margin-top: auto;
+  padding: 0;
+}
+
+@media (max-width: 1024px) {
+.list__contacts{
+  padding-bottom: 7px;
+}
+}
+
+.list__contact{
+  margin: 0;
+  padding: 10px 0;
+  font-family: PT Root UI;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #1A1A1A;
+  font-style: normal;
+}
+@media (max-width: 1024px) {
+  .list__contact{
+      font-size: 12px;
+      line-height: 17px;
+      padding: 5px 0;
+  }
+}
+
+.list__contact_center{
+  border-top: 1px solid #A7A6A6;
+  border-bottom: 1px solid #A7A6A6;
+}
+
+.list__footer{
+  margin: 0;
+  margin-top: 18px;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+
+
+
+.list__element_main-page {
+  max-width: none;
+}
+
+
+
+.list__element_is-registered{
+  background: #C8D1FF;
+}
+
+.list__submit_is-registered{
+  color: white;
+  background:  #224CFF;
+  width: 168px;
+}
+
+.list__submit_is-registered:hover {
+  background: #2E2468;
+  color: #F3F2F2;
+  border: 1px solid #2E2468;
+}
+
+
+.list__place-number{
+  margin: 0;
+  margin-left: 15px;
+  padding: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #000000;
+  font-family: 'PT Root UI';
+}
+@media (max-width: 1024px) {
+  .list__place-number{
+      font-size: 12px;
+      line-height: 17px;
+  }
+}
+
+.list__button-view{
+  background-image: url(./../../images/list-view.svg);
+  margin: 0;
+  margin-right: 0;
+  margin-left: auto;
+  padding: 0;
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: white;
+}
+@media (max-width: 1024px) {
+  .list__button-view{
+      width: 40px;
+      height: 40px;
+  }
+}
+
+.list__button-view_is-registered{
+  background-color: #C8D1FF;
+}

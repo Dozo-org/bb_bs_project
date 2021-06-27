@@ -1,0 +1,54 @@
+.filters__item {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  white-space: nowrap;
+  margin-top: 15px;
+}
+
+@media (max-width: 1024px) {
+  .filters__item {
+    margin-top: 10px;
+  }
+}
+
+.filters__button {
+  border: 1px solid #000000;
+  border-radius: 100px;
+  background: transparent;
+  font-family: Proto Grotesk Web Light;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  padding: 14px 19px;
+  max-height: 48px;
+}
+
+.filters__button:focus {
+  outline: none;
+}
+
+.filters__button:hover {
+  cursor: pointer;
+  background: #e0e0e0;
+}
+
+.filters__button_active {
+  background: #000;
+  color: #f3f2f2;
+}
+
+.filters__button_active:hover {
+  background: #2e2468;
+}
+
+@media (max-width: 1024px) {
+  .filters__button {
+    font-size: 12px;
+    line-height: 17px;
+    padding: 11px 14px 10px;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,121 @@
+.popup {
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 1s, opacity 1s;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.visible-block {
+  opacity: 1;
+  visibility: visible;
+}
+
+.list__title{
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  max-width: 320px;
+  font-family: 'Proto Grotesk Web Light';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 23px;
+  line-height: 30px;
+  color: #000000;
+}
+
+.popup__container {
+  position: fixed;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  max-width: 770px;
+  min-height: 559px;
+  background-color: #fff;
+  z-index: 2;
+  border-radius: 30px;
+  box-sizing: border-box;
+}
+
+.popup__container:hover {
+  cursor: auto;
+}
+
+@media screen and (max-width: 800px) {
+  .popup__container {
+    min-width: 290px;
+    min-height: 546px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .list__title{
+      font-size: 19px;
+      line-height: 23px;
+  }
+}
+
+.list__title_error {
+  color: #FF4E4E;
+}
+
+.list__submit{
+  margin: 0;
+  padding: 0;
+  width: 127px;
+  height: 48px;
+  border: 1px solid #224CFF;
+  border-radius: 100px;
+  box-sizing: border-box;
+  font-family: 'Proto Grotesk Web Light';
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #224CFF;
+  font-style: normal;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+
+.list__submit:hover {
+background:#C8D1FF;
+}
+
+.list__submit:focus{
+outline: none;
+}
+@media (max-width: 1024px) {
+  .list__submit{
+      font-size: 12px;
+      line-height: 17px;
+      width: 100px;
+      height: 40px;
+  }
+}
+
+.list__submit_type_error {
+  color: #000;
+  border-color: #000;
+  background-color: #F2E5E5;
+  width: 234px;
+  height: 48px;
+  box-sizing: border-box;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.list__submit_type_error:hover {
+  background-color: #E0E0E0;
+}
+
+.list__submit_is-registered {
+  color: white;
+  background: #224CFF;
+  width: 168px;
+}
