@@ -1,7 +1,5 @@
-from django.contrib.auth.models import AbstractUser, Permission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class City(models.Model):
@@ -25,7 +23,6 @@ class City(models.Model):
 class User(AbstractUser):
 
     class RoleUser(models.TextChoices):
-        USER = 'user', 'Пользователь'
         MENTOR = 'mentor', 'Наставник'
         MODERATOR = 'moderator', 'Модератор'
         MODERATOR_REG = 'moderator_reg', 'Модератор региональный'
@@ -36,7 +33,7 @@ class User(AbstractUser):
         max_length=50,
         blank=True,
         choices=RoleUser.choices,
-        default=RoleUser.USER
+        default=RoleUser.MENTOR
     )
 
     class Meta:
@@ -48,7 +45,7 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.is_staff or self.role == self.RoleUser.ADMIN
+        return self.role == self.RoleUser.ADMIN
 
     @property
     def is_moderator(self):
@@ -60,7 +57,7 @@ class User(AbstractUser):
 
     @property
     def is_mentor(self):
-        return self.role == 'mentor'
+        return self.role == self.RoleUser.MENTOR
 
 
 class Profile(models.Model):
@@ -88,12 +85,6 @@ class Profile(models.Model):
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'city'], name='Profile value unique')
+            models.UniqueConstraint(fields=['user', 'city'],
+                                    name='Profile value unique')
         ]
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    """ Создаем профиль при создании юзера"""
-    if created:
-        Profile.objects.create(user=instance, city=None)
