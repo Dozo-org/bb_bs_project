@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from common.models import City
+from common.models import City, Tag
 
 
 User = get_user_model()
@@ -16,9 +16,15 @@ class Event(models.Model):
     endAt = models.DateTimeField(verbose_name='окончание')
     seats = models.IntegerField(verbose_name='количество мест')
     takenSeats = models.IntegerField(default=0,
-                                      verbose_name='количество занятых мест')
+                                     verbose_name='количество занятых мест')
     city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
                              verbose_name='город', related_name='events')
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='events',
+        blank=True,
+        verbose_name='Теги'
+    )
 
     class Meta:
         verbose_name_plural = 'events'

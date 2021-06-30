@@ -1,17 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
-class Tag_Right(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
-
-    class Meta:
-        verbose_name = 'Тег'
-        verbose_name_plural = 'Теги'
-
-    def __str__(self):
-        return self.name
+from common.models import Tag
 
 
 class Right(models.Model):
@@ -20,7 +10,7 @@ class Right(models.Model):
     text = models.TextField(verbose_name=_('Текст'))
     color = models.CharField(max_length=50, verbose_name=_('Цвет фона'))
     image = models.ImageField(blank=True, verbose_name=_('Изображение'))
-    tags = models.ManyToManyField(Tag_Right, verbose_name=_('Теги'))
+    tags = models.ManyToManyField(Tag, verbose_name=_('Теги'))
 
     def __str__(self):
         return self.title

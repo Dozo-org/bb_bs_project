@@ -2,13 +2,7 @@ from django.contrib.admin import ModelAdmin, register
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import PlaceTag, Place
-
-
-@register(PlaceTag)
-class TagAdmin(ModelAdmin):
-    list_display = ('name', 'slug')
-    ordering = ('name',)
+from .models import Place
 
 
 @register(Place)
@@ -61,4 +55,3 @@ class PlaceAdmin(ModelAdmin):
             form.base_fields['city'].disabled = True
             form.base_fields['city'].help_text = 'Вы можете добавить рекомендацию только в своем городе'
         return form
-
