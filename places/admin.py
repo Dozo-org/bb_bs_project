@@ -2,13 +2,7 @@ from django.contrib.admin import ModelAdmin, register
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import PlaceTag, Place
-
-
-@register(PlaceTag)
-class TagAdmin(ModelAdmin):
-    list_display = ('name', 'slug')
-    ordering = ('name',)
+from .models import Place
 
 
 @register(Place)
@@ -35,7 +29,7 @@ class PlaceAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        if request.user.is_moderator_reg or request.user.is_moderator:
+        if request.user.is_moderator_reg:
             return queryset.filter(city=request.user.profile.city)
         return queryset
 
@@ -46,6 +40,8 @@ class PlaceAdmin(ModelAdmin):
             form.base_fields['city'].disabled = True
             form.base_fields['city'].help_text = 'Вы можете добавить рекомендацию только в своем городе'
         return form
+
+
 
     def has_add_permission(self, request):
         return request.user.is_superuser or request.user.is_staff

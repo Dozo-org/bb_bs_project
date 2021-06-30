@@ -2,20 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from common.models import City
-
-
-class PlaceTag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
-
-    class Meta:
-        ordering = ('name',)
-        verbose_name = _('Тег')
-        verbose_name_plural = _('Теги')
-
-    def __str__(self):
-        return self.name
+from common.models import City, Tag
 
 
 class Place(models.Model):
@@ -82,7 +69,7 @@ class Place(models.Model):
         blank=True,
     )
     tags = models.ManyToManyField(
-        PlaceTag,
+        Tag,
         related_name='places',
         blank=True,
         verbose_name=_('Теги')

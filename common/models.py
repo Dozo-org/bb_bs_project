@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
 
 class City(models.Model):
@@ -88,3 +91,37 @@ class Profile(models.Model):
             models.UniqueConstraint(fields=['user', 'city'],
                                     name='Profile value unique')
         ]
+
+
+class Tag(models.Model):
+
+    class ModelTag(models.TextChoices):
+        EVENT = 'event'
+        PLACE = 'place'
+        RIGHTS = 'rights'
+
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    model = models.CharField(
+        verbose_name='Тег для:',
+        max_length=50,
+        blank=True,
+        choices=ModelTag.choices,
+        default=ModelTag.EVENT
+    )
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = _('Тег')
+        verbose_name_plural = _('Теги')
+
+    def __str__(self):
+        return self.name
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """ Создаем профиль при создании юзера"""
+    if created:
+        Profile.objects.create(user=instance, city=None)
+
