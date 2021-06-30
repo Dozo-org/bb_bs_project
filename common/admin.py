@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import City, Profile
+from .models import City, Profile, Tag
 
 
 User = get_user_model()
@@ -90,3 +90,4 @@ class ProfileAdmin(ModelAdmin):
 
 site.unregister(Group)
 site.register(User, CustomUserAdmin)
+site.register(Tag)

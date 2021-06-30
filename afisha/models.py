@@ -14,8 +14,8 @@ class Event(models.Model):
     description = models.TextField(verbose_name='описание')
     startAt = models.DateTimeField(verbose_name='начало')
     endAt = models.DateTimeField(verbose_name='окончание')
-    seats = models.IntegerField(verbose_name='количество мест')
-    takenSeats = models.IntegerField(default=0,
+    seats = models.PositiveSmallIntegerField(verbose_name='количество мест')
+    takenSeats = models.PositiveSmallIntegerField(default=0,
                                      verbose_name='количество занятых мест')
     city = models.ForeignKey(City, on_delete=models.PROTECT, null=True,
                              verbose_name='город', related_name='events')
