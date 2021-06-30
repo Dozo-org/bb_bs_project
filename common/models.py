@@ -119,9 +119,9 @@ class Tag(models.Model):
         return self.name
 
 
-@receiver(post_save, sender=User)
+'''@receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     """ Создаем профиль при создании юзера"""
     if created:
-        Profile.objects.create(user=instance, city=None)
+        Profile.objects.create(user=instance, city=None)'''
 
