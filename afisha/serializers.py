@@ -6,12 +6,17 @@ from .models import Event, EventParticipant
 
 class EventSerializer(serializers.ModelSerializer):
     booked = serializers.SerializerMethodField('get_booked')
+    remainSeats = serializers.SerializerMethodField('get_remain_seats')
 
     def get_booked(self, obj):
         user = self.context['request'].user
         if user.is_anonymous:
             return False
         return EventParticipant.objects.filter(user=user, event=obj).exists()
+
+    def get_remain_seats(self, obj):
+        remainSeats = obj.seats - obj.takenSeats
+        return remainSeats
 
     class Meta:
         fields = '__all__'

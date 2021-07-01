@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Place, PlaceTag
+from .models import Place
 
 
 class InfoField(serializers.Field):
@@ -8,7 +8,7 @@ class InfoField(serializers.Field):
         display = ''
         if place.gender:
             display += place.get_gender(place.gender) + ', '
-        display += str(place.age) + ' лет.'
+        display += str(place.age) + ' лет. '
         display += place.get_activity_type(place.activity_type) + ' отдых'
         return display
 
@@ -29,8 +29,6 @@ class PlaceReadSerializer(serializers.ModelSerializer):
             'imageUrl',
             'city'
         ]
-
-
 
 
 class PlaceWriteSerializer(serializers.ModelSerializer):
@@ -56,9 +54,3 @@ class PlaceWriteSerializer(serializers.ModelSerializer):
             'imageUrl',
             'city'
         ]
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PlaceTag
-        fields = serializers.ALL_FIELDS
