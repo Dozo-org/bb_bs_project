@@ -58,20 +58,12 @@ class PlaceRetreiveUpdate(RetrieveUpdateAPIView, CreateAPIView):
         return PlaceWriteSerializer
 
     def get_object(self):
-        if self.request.user.is_authenticated:
-            profile = get_object_or_404(Profile, user=self.request.user)
-            latest_chosen = Place.objects.filter(
-                verified=True,
-                chosen=True,
-                city=profile.city
-            ).latest('pubDate')
-        else:
-            city = self.request.query_params.get('city')
-            latest_chosen = Place.objects.filter(
-                verified=True,
-                chosen=True,
-                city=city
-            ).latest('pubDate')
+        city = self.request.query_params.get('city')
+        latest_chosen = Place.objects.filter(
+            verified=True,
+            chosen=True,
+            city=city
+        ).latest('pubDate')
         return latest_chosen
 
     def perform_update(self, serializer):
