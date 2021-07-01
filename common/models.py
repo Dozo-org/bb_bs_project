@@ -124,4 +124,3 @@ def create_user_profile(sender, instance, created, **kwargs):
     """ Создаем профиль при создании юзера"""
     if created:
         Profile.objects.create(user=instance, city=None)'''
-
