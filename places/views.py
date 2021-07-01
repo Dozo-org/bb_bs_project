@@ -25,11 +25,21 @@ class PlacesListViewSet(CustomViewSet):
     pagination_class = PlaceSetPagination
 
     def get_queryset(self):
+        latest_chosen = Place.objects.filter(
+                verified=True,
+                chosen=True
+            ).latest('pubDate')
         if self.request.user.is_authenticated:
             profile = get_object_or_404(Profile, user=self.request.user)
-            return Place.objects.filter(city=profile.city, verified=True)
+            return Place.objects.filter(
+                city=profile.city,
+                verified=True
+            ).exclude(pk=latest_chosen.pk)
         city = self.request.query_params.get('city')
-        return Place.objects.filter(verified=True,city__name=city)
+        return Place.objects.filter(
+                city=city,
+                verified=True
+            ).exclude(pk=latest_chosen.pk)
 
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='tags')
@@ -48,10 +58,13 @@ class PlaceRetreiveUpdate(RetrieveUpdateAPIView, CreateAPIView):
         return PlaceWriteSerializer
 
     def get_object(self):
-        pid = self.request.query_params.get('place')
-        if not pid:
-            return None
-        return get_object_or_404(Place, pk=pid)
+        city = self.request.query_params.get('city')
+        latest_chosen = Place.objects.filter(
+            verified=True,
+            chosen=True,
+            city=city
+        ).latest('pubDate')
+        return latest_chosen
 
     def perform_update(self, serializer):
         serializer.save(chosen=self.request.user.is_mentor)
