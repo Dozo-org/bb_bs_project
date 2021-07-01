@@ -1,6 +1,6 @@
-from django.contrib.admin import ModelAdmin, register
+from django.contrib.admin import ModelAdmin, register,site
 
-from afisha.models import Event
+from afisha.models import Event, EventParticipant
 
 
 @register(Event)
@@ -41,3 +41,6 @@ class EventAdmin(ModelAdmin):
             form.base_fields['city'].disabled = True
             form.base_fields['city'].help_text = 'Вы можете добавить событие только в своем городе'
         return form
+
+
+site.register(EventParticipant)

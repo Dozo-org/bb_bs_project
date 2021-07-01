@@ -2,13 +2,7 @@ from django.contrib.admin import ModelAdmin, register
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import PlaceTag, Place
-
-
-@register(PlaceTag)
-class TagAdmin(ModelAdmin):
-    list_display = ('name', 'slug')
-    ordering = ('name',)
+from .models import Place
 
 
 @register(Place)
@@ -35,24 +29,9 @@ class PlaceAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        if request.user.is_moderator_reg or request.user.is_moderator:
+        if request.user.is_moderator_reg:
             return queryset.filter(city=request.user.profile.city)
         return queryset
-
-    def has_module_permission(self, request):
-        return not request.user.is_anonymous
-
-    def has_view_permission(self, request, obj=None):
-        return not request.user.is_anonymous
-
-    def has_add_permission(self, request,obj=None):
-        return not request.user.is_anonymous
-
-    def has_change_permission(self, request, obj=None):
-        return not request.user.is_anonymous
-
-    def has_delete_permission(self, request, obj=None):
-        return not request.user.is_anonymous
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(PlaceAdmin, self).get_form(request, obj, **kwargs)
@@ -62,3 +41,16 @@ class PlaceAdmin(ModelAdmin):
             form.base_fields['city'].help_text = 'Вы можете добавить рекомендацию только в своем городе'
         return form
 
+
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser or request.user.is_staff

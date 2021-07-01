@@ -1,18 +1,22 @@
-from rest_framework.decorators import action
-from rest_framework.permissions import (IsAuthenticated)
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import get_object_or_404
 
 from .models import City, User, Profile
-from .permissions import (IsAdmin, IsSuperuser, IsUserOrReadOnly)
+from .permissions import (IsSuperuser, IsUserOrReadOnly)
 from .serializers import CitySerializer, ProfileSerializer
 
 
 class CityViewSet(ModelViewSet):
     queryset = City.objects.all().order_by('-isPrimary', 'name')
     serializer_class = CitySerializer
+<<<<<<< HEAD
     premission_classes = (IsUserOrReadOnly,)
+=======
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+>>>>>>> ff8b782c81e91cd206020da877aa685d577e971c
     lookup_field = 'name'
 
 
