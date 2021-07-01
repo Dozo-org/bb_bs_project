@@ -7,6 +7,8 @@ from common.models import Profile
 @pytest.fixture
 def admin(city):
     admin = baker.make_recipe('tests.fixtures.admin')
+    admin.profile.city=city
+    admin.profile.save()
     return admin
 
 
@@ -53,6 +55,4 @@ def moderator_client(token_for_moderator):
     return client
 
 
-@pytest.fixture
-def admin_profile(admin, city):
-    return Profile.objects.create(user=admin, city=city)
+

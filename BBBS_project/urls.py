@@ -1,14 +1,21 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
+from rest_framework.routers import DefaultRouter
 
-from afisha.routers import CustomRouter
-from afisha.urls import router as afisha_router
-from common.urls import router as common_router
+from common.views import CityViewSet, ProfileViewSet
+from afisha.views import EventViewSet, MainViewSet, EventParticipantViewSet
+from places.views import PlaceRetreiveUpdate, PlacesListViewSet
 
-v1_router = CustomRouter()
-v1_router.registry.extend(afisha_router.registry)
-v1_router.registry.extend(common_router.registry)
+v1_router = DefaultRouter()
+v1_router.register(r'afisha/events', EventViewSet, basename='event')
+v1_router.register(r'afisha/event-participants', EventParticipantViewSet,
+                basename='event-participant')
+v1_router.register(r'main', MainViewSet, basename='main')
+v1_router.register(r'cities', CityViewSet, basename='city_list')
+v1_router.register(r'profile', ProfileViewSet, basename='profile')
+v1_router.register(r'places', PlacesListViewSet, basename='places')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,5 +24,7 @@ urlpatterns = [
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/place/', PlaceRetreiveUpdate.as_view()),
+    path('api/v1/', include('rights.urls')),
     path('api/v1/', include(v1_router.urls)),
 ]

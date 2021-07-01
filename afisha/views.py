@@ -5,12 +5,14 @@ from rest_framework.response import Response
 
 from .main_data import event
 from .models import Event, EventParticipant
+from .pagination import EventSetPagination
 from .serializers import EventSerializer, EventParticipantSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     http_method_names = ['get']
+    pagination_class = EventSetPagination
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -25,6 +27,7 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = EventParticipantSerializer
     http_method_names = ['get', 'post', 'delete']
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = EventSetPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -34,8 +37,8 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         event_id = self.request.data.get('event')
         event = get_object_or_404(Event, id=event_id)
-        if event.taken_seats < event.seats:
-            event.taken_seats += 1
+        if event.takenSeats < event.seats:
+            event.takenSeats += 1
             event.save()
             serializer.save(user=self.request.user)
         else:
@@ -51,7 +54,7 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         event = Event.objects.get(pk=instance.event.id)
-        event.taken_seats -= 1
+        event.takenSeats -= 1
         event.save()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,9 +1,10 @@
-from django.contrib import admin
+from django.contrib.admin import ModelAdmin, register,site
 
-from .models import Event
+from afisha.models import Event, EventParticipant
 
 
-class EventAdmin(admin.ModelAdmin):
+@register(Event)
+class EventAdmin(ModelAdmin):
     list_display = ('city', 'title', 'startAt', 'endAt', 'seats',
                     'takenSeats')
     search_fields = ('title', 'city', 'startAt', 'endAt')
@@ -15,7 +16,7 @@ class EventAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         if request.user.is_moderator_reg:
-            return queryset.filter(city=request.user.city)
+            return queryset.filter(city=request.user.profile.city)
         return queryset
 
     def has_module_permission(self, request):
@@ -33,5 +34,13 @@ class EventAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return not request.user.is_anonymous
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(EventAdmin, self).get_form(request, obj, **kwargs)
+        if request.user.is_moderator_reg:
+            form.base_fields['city'].initial = request.user.profile.city
+            form.base_fields['city'].disabled = True
+            form.base_fields['city'].help_text = 'Вы можете добавить событие только в своем городе'
+        return form
 
-admin.site.register(Event, EventAdmin)
+
+site.register(EventParticipant)
