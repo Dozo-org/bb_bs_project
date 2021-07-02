@@ -2,11 +2,13 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
 from .models import Event, EventParticipant
+from common.serializers import TagSerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
     booked = serializers.SerializerMethodField('get_booked')
     remainSeats = serializers.SerializerMethodField('get_remain_seats')
+    tags = TagSerializer(many=True)
 
     def get_booked(self, obj):
         user = self.context['request'].user

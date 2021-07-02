@@ -37,4 +37,4 @@ class ProfileSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = serializers.ALL_FIELDS
+        exclude = ('model', )
