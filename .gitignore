@@ -6,4 +6,5 @@ db.sqlite3
 static/
 .static/
 static
+media/
 develop
