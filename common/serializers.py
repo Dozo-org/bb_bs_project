@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, City, Profile
+from .models import User, City, Profile, Tag
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,14 +16,25 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        fields = '__all__'
-        model = Profile
-
-
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = City
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    city = CitySerializer()
+
+    class Meta:
+        fields = (
+            'id',
+            'user',
+            'city',
+        )
+        model = Profile
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        exclude = ('model', )
