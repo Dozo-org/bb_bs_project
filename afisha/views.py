@@ -5,12 +5,14 @@ from rest_framework.response import Response
 
 from .main_data import event
 from .models import Event, EventParticipant
+from .pagination import EventSetPagination
 from .serializers import EventSerializer, EventParticipantSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     http_method_names = ['get']
+    pagination_class = EventSetPagination
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -25,6 +27,7 @@ class EventParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = EventParticipantSerializer
     http_method_names = ['get', 'post', 'delete']
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = EventSetPagination
 
     def get_queryset(self):
         user = self.request.user
