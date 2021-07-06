@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Place
+from common.serializers import TagSerializer
 
 
 class InfoField(serializers.Field):
@@ -15,6 +16,7 @@ class InfoField(serializers.Field):
 
 class PlaceReadSerializer(serializers.ModelSerializer):
     info = InfoField(source='*')
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = Place
@@ -27,7 +29,8 @@ class PlaceReadSerializer(serializers.ModelSerializer):
             'description',
             'link',
             'imageUrl',
-            'city'
+            'city',
+            'tags'
         ]
 
 
@@ -36,7 +39,6 @@ class PlaceWriteSerializer(serializers.ModelSerializer):
     imageUrl = serializers.ImageField(read_only=True)
     id = serializers.IntegerField(read_only=True)
     chosen = serializers.BooleanField(read_only=True)
-
 
     class Meta:
         model = Place
@@ -52,5 +54,6 @@ class PlaceWriteSerializer(serializers.ModelSerializer):
             'description',
             'link',
             'imageUrl',
-            'city'
+            'city',
+            'tags'
         ]

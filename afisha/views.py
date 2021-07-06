@@ -1,18 +1,23 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, viewsets
 from rest_framework import status, serializers
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from .filters import EventFilter
 from .main_data import event
 from .models import Event, EventParticipant
 from .pagination import EventSetPagination
 from .serializers import EventSerializer, EventParticipantSerializer
+from common.models import Tag
+from common.serializers import TagSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     http_method_names = ['get']
     pagination_class = EventSetPagination
+    filterset_class = EventFilter
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -20,6 +25,13 @@ class EventViewSet(viewsets.ModelViewSet):
                 city=self.request.user.profile.city).order_by('startAt')
         city_by_id = self.request.query_params.get('city')
         return Event.objects.filter(city=city_by_id).order_by('startAt')
+
+    @action(methods=['GET', ], detail=False,
+            url_path='tags', url_name='tags')
+    def get_tags(self, request):
+        tags = Tag.objects.filter(model='event')
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
 
 
 class EventParticipantViewSet(viewsets.ModelViewSet):
