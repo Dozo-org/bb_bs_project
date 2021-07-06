@@ -7,5 +7,5 @@ class RightFilter(django_filters.FilterSet):
     class Meta:
         model = Right
         fields = {
-            'tags__slug': ['in'],
+            'tags__slug': ['exact'],
         }
