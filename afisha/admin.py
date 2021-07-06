@@ -1,4 +1,5 @@
-from django.contrib.admin import ModelAdmin, register,site
+from common.models import Tag
+from django.contrib.admin import ModelAdmin, register, site
 
 from afisha.models import Event, EventParticipant
 
@@ -18,6 +19,11 @@ class EventAdmin(ModelAdmin):
         if request.user.is_moderator_reg:
             return queryset.filter(city=request.user.profile.city)
         return queryset
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'tags':
+            kwargs['queryset'] = Tag.objects.filter(model='event')
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def has_module_permission(self, request):
         return not request.user.is_anonymous

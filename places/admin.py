@@ -1,3 +1,4 @@
+from common.models import Tag
 from django.contrib.admin import ModelAdmin, register
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
@@ -8,7 +9,7 @@ from .models import Place
 @register(Place)
 class PlaceAdmin(ModelAdmin):
     list_display = (
-        'title','showOnMain', 'chosen', 'verified','get_tags',
+        'title', 'showOnMain', 'chosen', 'verified', 'get_tags',
         'address', 'city', 'pubDate', 'description',
         'gender', 'age',
         'activity_type', 'link', 'imageUrl'
@@ -17,9 +18,9 @@ class PlaceAdmin(ModelAdmin):
         'pubDate',
     ]
     search_fields = ('title', 'city', 'tags')
-    list_filter = ('chosen', 'showOnMain', 'activity_type', 'age','tags')
+    list_filter = ('chosen', 'showOnMain', 'activity_type', 'age', 'tags')
     empty_value_display = '-пусто-'
-    ordering = ('chosen','-pubDate')
+    ordering = ('chosen', '-pubDate')
 
     @admin.display(description=_('Теги'))
     def get_tags(self, obj):
@@ -41,7 +42,10 @@ class PlaceAdmin(ModelAdmin):
             form.base_fields['city'].help_text = 'Вы можете добавить рекомендацию только в своем городе'
         return form
 
-
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'tags':
+            kwargs['queryset'] = Tag.objects.filter(model='place')
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def has_add_permission(self, request):
         return request.user.is_superuser or request.user.is_staff
