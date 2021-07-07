@@ -8,6 +8,7 @@ from rest_framework.routers import DefaultRouter
 from common.views import CityViewSet, ProfileViewSet
 from afisha.views import EventViewSet, MainViewSet, EventParticipantViewSet
 from places.views import PlaceRetreiveUpdate, PlacesListViewSet
+from questions.views import ListCreateQuestionsViewSet
 
 v1_router = DefaultRouter()
 v1_router.register(r'afisha/events', EventViewSet, basename='event')
@@ -17,6 +18,7 @@ v1_router.register(r'main', MainViewSet, basename='main')
 v1_router.register(r'cities', CityViewSet, basename='city_list')
 v1_router.register(r'profile', ProfileViewSet, basename='profile')
 v1_router.register(r'places', PlacesListViewSet, basename='places')
+v1_router.register(r'questions', ListCreateQuestionsViewSet, basename='questions')
 
 
 urlpatterns = [
