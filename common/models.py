@@ -99,6 +99,7 @@ class Tag(models.Model):
         EVENT = 'event'
         PLACE = 'place'
         RIGHTS = 'rights'
+        QUESTIONS = 'questions'
 
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'afisha',
     'rights',
     'places',
+    'questions',
 ]
 
 MIDDLEWARE = [
