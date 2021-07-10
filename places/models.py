@@ -52,7 +52,7 @@ class Place(models.Model):
         verbose_name=_('Возраст'),
         blank=True,
         null=True,
-        validators=[MinValueValidator(1), MaxValueValidator(25)]
+        validators=[MinValueValidator(1), MaxValueValidator(18)]
     )
     activity_type = models.PositiveSmallIntegerField(
         verbose_name=_('Тип отдыха'),
