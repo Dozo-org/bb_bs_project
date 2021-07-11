@@ -7,8 +7,9 @@ from rest_framework.routers import DefaultRouter
 
 from common.views import CityViewSet, ProfileViewSet
 from afisha.views import EventViewSet, MainViewSet, EventParticipantViewSet
-from places.views import PlaceRetreiveUpdate, PlacesListViewSet
+from places.views import PlaceRetrieveCreate, PlacesListViewSet
 from questions.views import ListCreateQuestionsViewSet
+
 
 v1_router = DefaultRouter()
 v1_router.register(r'afisha/events', EventViewSet, basename='event')
@@ -28,7 +29,7 @@ urlpatterns = [
     path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/v1/place/', PlaceRetreiveUpdate.as_view()),
+    path('api/v1/place/', PlaceRetrieveCreate.as_view()),
     path('api/v1/', include('rights.urls')),
     path('api/v1/', include(v1_router.urls)),]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

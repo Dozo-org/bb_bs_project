@@ -1,8 +1,10 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView
 
 from .serializers import PlaceReadSerializer, PlaceWriteSerializer
 from .models import Place
@@ -25,21 +27,22 @@ class PlacesListViewSet(CustomViewSet):
     pagination_class = PlaceSetPagination
 
     def get_queryset(self):
-        latest_chosen = Place.objects.filter(
-                verified=True,
-                chosen=True
-            ).latest('pubDate')
+        # Отдаем фронту все места, кроме последнего
+        # добавленного наставником, последнее - для большой карточки
+        # фронт его получает из api/v1/place/?city={id}
         if self.request.user.is_authenticated:
             profile = get_object_or_404(Profile, user=self.request.user)
-            return Place.objects.filter(
-                city=profile.city,
-                verified=True
-            ).exclude(pk=latest_chosen.pk)
-        city = self.request.query_params.get('city')
-        return Place.objects.filter(
-                city=city,
-                verified=True
-            ).exclude(pk=latest_chosen.pk)
+            city = profile.city
+        else:
+            city = self.request.query_params.get('city')
+        latest = Place.objects.filter(
+            verified=True,
+            chosen=True,
+            city=city
+        ).first()
+        if latest:
+            return Place.objects.filter(city=city, verified=True).exclude(id=latest.id)
+        return Place.objects.filter(city=city, verified=True)
 
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='tags')
@@ -49,7 +52,7 @@ class PlacesListViewSet(CustomViewSet):
         return Response(serializer.data)
 
 
-class PlaceRetreiveUpdate(RetrieveUpdateAPIView, CreateAPIView):
+class PlaceRetrieveCreate(RetrieveAPIView, CreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
@@ -59,15 +62,15 @@ class PlaceRetreiveUpdate(RetrieveUpdateAPIView, CreateAPIView):
 
     def get_object(self):
         city = self.request.query_params.get('city')
-        latest_chosen = Place.objects.filter(
-            verified=True,
-            chosen=True,
-            city=city
-        ).latest('pubDate')
-        return latest_chosen
-
-    def perform_update(self, serializer):
-        serializer.save(chosen=self.request.user.is_mentor)
+        try:
+            latest_chosen = Place.objects.filter(
+                verified=True,
+                chosen=True,
+                city=city
+            ).latest('pubDate')
+            return latest_chosen
+        except ObjectDoesNotExist:
+            raise Http404
 
     def perform_create(self, serializer):
         serializer.save(chosen=self.request.user.is_mentor)
